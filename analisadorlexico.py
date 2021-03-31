@@ -1,10 +1,7 @@
 import os
 
 #checar requerimentos
-#ao iniciar o programa, a tabela de símbolos deverá ser preenchida com todas as PALAVRAS RESERVAS  da linguagem
-#importante notar: nas transições de estados, atualizo o valor de i antes de chamar a transição, portanto "entrada" corresponde ao caractere lido APÓS o estado, ou seja, a próxima entrada
 #qual é a flag EOF? tratar estado 12.
-#o nosso automato considera que todos os operadores relacionais e símbolos têm ao menos um espaço em seguda
 
 class token:
     def __init__(self, proximo=None, anterior=None, classe=None, lexema=None, tipo=NULL):
@@ -259,6 +256,12 @@ class analisador:
             return q25(1)
 
     def q12(self, entrada): # reconhece *EOF*
+        if self.entrada == '$':
+            if not procura_na_lista(main.word):
+                push('EOF', '$')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
     def q13(self, entrada): # reconhece *<*
         if self.entrada == '-':
@@ -1264,6 +1267,23 @@ class analisador:
         if not os.path.exists(fonte)
             print("Arquivo não encontrado.\n")
         else 
+
+            fonte.write("$")
+            push('inicio', 'inicio')
+            push('varinicio', 'varinicio')
+            push('varfim', 'varfim')
+            push('escreva', 'escreva')
+            push('leia', 'leia')
+            push('se', 'se')
+            push('entao', 'entao')
+            push('fimse', 'fimse')
+            push('facaate', 'facaate')
+            push('fimfaca', 'fimfaca')
+            push('fim', 'fim')
+            push('inteiro', 'inteiro')
+            push('lit', 'lit')
+            push('real', 'real')
+
             global contador_linha = 0        
             for line in fonte
                 contador_linha += 1
