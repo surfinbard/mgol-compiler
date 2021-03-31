@@ -1,5 +1,10 @@
 import os
-import util
+
+#checar requerimentos
+#ao iniciar o programa, a tabela de símbolos deverá ser preenchida com todas as PALAVRAS RESERVAS  da linguagem
+#importante notar: nas transições de estados, atualizo o valor de i antes de chamar a transição, portanto "entrada" corresponde ao caractere lido APÓS o estado, ou seja, a próxima entrada
+#qual é a flag EOF? tratar estado 12.
+#o nosso automato considera que todos os operadores relacionais e símbolos têm ao menos um espaço em seguda
 
 class token:
     def __init__(self, proximo=None, anterior=None, classe=None, lexema=None, tipo=NULL):
@@ -11,797 +16,1249 @@ class token:
     def push(self, classe, lexema):
  
         novo_token = token(classe = classe, lexema = lexema)
- 
+        if(self.raiz == None):
+            self.raiz = novo_token
+            return
+
+        self.raiz.anterior = novo_token
         novo_token.proximo = self.raiz
-        novo_token.anterior = None
-    
-        if self.raiz is not None:
-            self.raiz.anterior = novo_token
         self.raiz = novo_token
+    
+    def procura_na_lista(self, lexema):
+        temp = self.raiz
+        while temp:
+            if temp.lexema == lexema:
+                break
+            temp = temp.next
+        if temp == None:
+            return False
+        return temp
 
 class analisador:
 
     def scanner(self, entrada):
-        for i in range(0, len(entrada))
+        global i = 0 
+     #   while i < len(entrada)
+        contador_coluna += 1
+        return q0(entrada[i])
+        #se o retorno do q0 for id, verificar na tabela e dar push se nao tiver la
+        #se nao for id, só retorna o token reconhecido
+
+    def q0(self, entrada):
+
+        if entrada.isdigit():
             contador_coluna += 1
-            q0()
+            i += 1
+            return q1(scanner.entrada[i])
+        elif '"' == entrada:
+            contador_coluna += 1
+            i += 1
+            return q7(scanner.entrada[i])
+        elif '{' == entrada:
+            contador_coluna += 1
+            i += 1
+            return q9(scanner.entrada[i])
+        elif '<' == entrada:
+            contador_coluna += 1
+            i += 1
+            return q13(scanner.entrada[i])
+        elif '=' == entrada:
+            contador_coluna += 1
+            i += 1
+            return q17(scanner.entrada[i])
+        elif '>' == entrada:
+            contador_coluna += 1
+            i += 1
+            return q18(scanner.entrada[i])
+        elif '+' == entrada or '-' == entrada or '*' == entrada or '/' == entrada:
+            contador_coluna += 1
+            i += 1
+            return q20(scanner.entrada[i])
+        elif '(' == entrada:
+            contador_coluna += 1
+            i += 1
+            return q21(scanner.entrada[i])
+        elif ')' == entrada:
+            contador_coluna += 1
+            i += 1
+            return q22(scanner.entrada[i])
+        elif ';' == entrada:
+            contador_coluna += 1
+            i += 1
+            return q23(scanner.entrada[i])
+        elif ',' == entrada:
+            contador_coluna += 1
+            i += 1
+            return q24(scanner.entrada[i])
+        elif 'e' == entrada:
+            contador_coluna += 1
+            i += 1
+            return q27(scanner.entrada[i])
+        elif 'f' == entrada:
+            contador_coluna += 1
+            i += 1
+            return q38(scanner.entrada[i])
+        elif 'i' == entrada:
+            contador_coluna += 1
+            i += 1
+            return q53(scanner.entrada[i])
+        elif 'l' == entrada:
+            contador_coluna += 1
+            i += 1
+            return q64(scanner.entrada[i])
+        elif 'r' == entrada:
+            contador_coluna += 1
+            i += 1
+            return q70(scanner.entrada[i])
+        elif 'v' == entrada:
+            contador_coluna += 1
+            i += 1
+            return q74(scanner.entrada[i])
+        elif 's' == entrada:
+            contador_coluna += 1
+            i += 1
+            return q86(scanner.entrada[i])
+        elif entrada.isalpha():
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif '\\' == entrada:
+            contador_coluna += 1
+            i += 1
+            return q26(scanner.entrada[i])
+        else: 
+            contador_coluna += 1
+            i += 1
+            return q25(1)
 
-    def q0(self):
 
-        # aqui precisamos completar e linkar estados
-        # não sei mexer com python direito ainda, veja se fiz caquinha com self
-        if próprio.isdigit():
-            self.q1()
-        elif '"' == próprio
-            self.q7()
-        elif '{' == próprio
-            self.q9()
-        elif '<' == próprio
-            self.q13()
-        elif '=' == próprio
-            self.q17()
-        elif '>' == próprio
-            self.q18()
-        elif '+' == próprio or '-' == próprio or '*' == próprio or '/' == próprio
-            self.q21()
-        elif '(' == próprio
-            self.q21()
-        elif ')' == próprio
-            self.q22()
-        elif ';' == próprio
-            self.q23()
-        elif ',' == próprio
-            self.q24()
-        elif 'e' == próprio
-            self.q27()
-        elif 'f' == próprio
-            self.q38()
-        elif 'i' == próprio
-            self.q53()
-        elif 'l' == próprio
-            self.q64()
-        elif 'r' == próprio
-            self.q70()
-        elif 'v' == próprio
-            self.q74()
-        elif 's' == próprio
-            self.q86()
-        elif próprio.isupper() or próprio.islower() or próprio == '_'
-            self.q11()
-        # verificar fim de linha
-        #self.q86()
-        #vericar \t \s \n
-        #self.q26()
-         else: #erro
-        self.q25()
+    def q1(self, entrada): # token *num*
+        if self.entrada.isdigit():
+            contador_coluna += 1
+            i += 1
+            return q1(scanner.entrada[i])
+        elif '\.' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q2(scanner.entrada[i])
+        elif 'e' == self.entrada or 'E' == self.entrada: 
+            contador_coluna += 1
+            i += 1
+            return q4(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('NUM', main.word)
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
+    def q2(self, entrada):  
+        if self.entrada.isdigit():
+            contador_coluna += 1
+            i += 1
+            return q3(scanner.entrada[i])
+        else: 
+            return q25(1)
 
-    def q1(self): # token *num*
+    def q3(self, entrada): # token *num*
+        if self.entrada.isdigit():
+            contador_coluna += 1
+            i += 1
+            return q3(scanner.entrada[i])
+        elif 'e' == self.entrada or 'E' == self.entrada: 
+            contador_coluna += 1
+            i += 1
+            return q4(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('NUM', main.word)
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q2(self):
+    def q4(self, entrada):
+        if self.entrada.isdigit():
+            contador_coluna += 1
+            i += 1
+            return q6(scanner.entrada[i])
+        elif '+' == self.entrada or '-' == self.entrada: 
+            contador_coluna += 1
+            i += 1
+            return q5(scanner.entrada[i])
+        else: 
+            return q25(1)
 
-    def q3(self): # token *num*
+    def q5(self, entrada): 
+        if self.entrada.isdigit():
+            contador_coluna += 1
+            i += 1
+            return q6(scanner.entrada[i])
+        else: 
+            return q25(1)
 
-    def q4(self):
+    def q6(self, entrada): # token *num*
+        if self.entrada.isdigit():
+            contador_coluna += 1
+            i += 1
+            return q6(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('NUM', main.word)
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+    
+    def q7(self, entrada):
+        if self.entrada == '\.':
+            contador_coluna += 1
+            i += 1
+            return q7(scanner.entrada[i])
+        elif self.entrada == '"':
+            contador_coluna += 1
+            i += 1
+            return q8(scanner.entrada[i])
+        else: 
+            return q25(1)
 
-    def q5(self):
+    def q8(self, entrada): # token *lit*
+        if self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('lit', main.word)
+            return procura_na_lista(main.word)
+        else: 
+            return q25(2)
 
-    def q6(self): # token *num*
+    def q9(self, entrada): #Abre { comentário
+        if self.entrada == '\.':
+            contador_coluna += 1
+            i += 1
+            return q9(scanner.entrada[i])
+        elif self.entrada == '}':
+            contador_coluna += 1
+            i += 1
+            return q10()
+        else: 
+            return q25(1)
 
-    def q7(self): # literal
+    def q10(self, entrada) # fecha } comentário
+        if self.entrada.isspace():
+            return None
+        else: 
+            return q25(3)
 
-    def q8(self): # token *lit*
+    def q11(self, entrada): # reconhece *id*
+        if self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_':
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', main.word)
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q9(self): #Abre { comentário
+    def q12(self, entrada): # reconhece *EOF*
 
-    def q10(self): # fecha } comentário
+    def q13(self, entrada): # reconhece *<*
+        if self.entrada == '-':
+            contador_coluna += 1
+            i += 1
+            return q16(scanner.entrada[i])
+        elif self.entrada == '=':
+            contador_coluna += 1
+            i += 1
+            return q15(scanner.entrada[i])
+        elif self.entrada == '>':
+            contador_coluna += 1
+            i += 1
+            return q14(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('OPR', '<')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q11(self): # reconhece *id*
+    def q14(self, entrada): # diferente <>
+        if self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('OPR', '<>')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q12(self): # reconhece *EOF*
+    def q15(self, entrada):  # menor igual <=
+        if self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('OPR', '<=')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q13(self): # reconhece *<*
-        if '>' == self.caracter:
-            self.q14()
-        elif '=' == self.caracter:
-            self.q15()
-        elif '-' == self.caracter:
-            self.q16()
-        else #erro
+    def q16(self, entrada): # atribuicao <-
+        if self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('OPR', '<-')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q14(self): # diferente <>
+    def q17(self, entrada): # =
+        if self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('OPR', '=')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q15(self):  # menor igual <=
+    def q18(self, entrada): # reconhece *>
+        if self.entrada == '=':
+            contador_coluna += 1
+            i += 1
+            return q19(self.entrada[i])
+        if self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('OPR', '>')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q16(self): # atribuicao <-
+    def q19(self, entrada): # maior igual >=
+        if self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('OPR', '>=')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q17(self): # =
+    def q20(self, entrada): # operadores + - *  /
+        if self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('OPM', main.word)
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q18(self): # reconhece *>*			elif '=' == self.caracter:
-        if '=' == self.caracter:
-            self.q15()
-        else  # erro
+    def q21(self, entrada): # (
+        if self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('AB_P', '(')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q19(self): # maior igual >=
+    def q22(self, entrada): # )
+        if self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('FC_P', ')')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q20(self): # operadores + - *  /
+    def q23(self, entrada): # ;
+        if self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('PT_V', ';')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q21(self): # (
+    def q24(self, entrada): # ,
+        if self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('VIR', ',')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q22(self): # )
+    def q25(self, entrada): # erro
+        return erro(entrada)
 
-    def q23(self): # ;
+    def q26(self, entrada): # \t \s \n
+        if 'n' == self.entrada or 's' == self.entrada or 't' == self.entrada:
+            return None
+        else: 
+            return q25(1)
 
-    def q24(self): # ,
+    def q27(self, entrada): 
+        if 'n' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q28(scanner.entrada[i])
+        elif 's' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q32(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_':
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'e')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q25(self): # erro
+    def q28(self, entrada):
+        if 't' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q29(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'en')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q26(self): # \t \s \n
+    def q29(self, entrada):
+        if 'a' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q30(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'ent')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q27(self): # self.caracter = self.__obter_caracter()
-        if 'n' == self.caracter:
-            self.q28()
-        elif 's' == self.caracter:
-            self.q32()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
+    def q30(self, entrada):
+        if 'o' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q31(scanner.enrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'enta')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q28(self):
-        # self.caracter = self.__obter_caracter()
-        if 't' == self.caracter:
-            self.q29()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q29(self):
-        # self.caracter = self.__obter_caracter()
-        if 'a' == self.caracter:
-            self.q30()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q30(self):
-        # self.caracter = self.__obter_caracter()
-        if 'o' == self.caracter:
-            self.q31()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q31(): # reconhece o comando *entao*
-
-    def q32(self):
-        # self.caracter = self.__obter_caracter()
-        if 'c' == self.caracter:
-            self.q33()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q33(self):
-        # self.caracter = self.__obter_caracter()
-        if 'r' == self.caracter:
-            self.q34()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q34(self):
-        # self.caracter = self.__obter_caracter()
-        if 'e' == self.caracter:
-            self.q35()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: #implementa erro
-
-    def q35(self):
-        # self.caracter = self.__obter_caracter()
-        if 'v' == self.caracter:
-            self.q36()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q36(self):
-        # self.caracter = self.__obter_caracter()
-        if 'a' == self.caracter:
-            self.q37()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q37(self): # reconhece o comando *escreva*
-
-    def q38(self):
-        # self.caracter = self.__obter_caracter()
-        if 'a' == self.caracter:
-            self.q39()
-        elif 'i' == self.caracter:
-            self.q45()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q39(self):
-        # self.caracter = self.__obter_caracter()
-        if 'c' == self.caracter:
-            self.q40()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q40(self):
-        # self.caracter = self.__obter_caracter()
-        if 'a' == self.caracter:
-            self.q41()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q41(self):
-        # self.caracter = self.__obter_caracter()
-        if 'a' == self.caracter:
-            self.q42()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q42(self):
-        # self.caracter = self.__obter_caracter()
-        if 't' == self.caracter:
-            self.q43()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-        def q43(self):
-        # self.caracter = self.__obter_caracter()
-        if 'e' == self.caracter:
-            self.q44()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q44(): # reconhece o comando *facaate*
-
-    def q45(self):
-        # self.caracter = self.__obter_caracter()
-        if 'm' == self.caracter:
-            self.q46()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q46(self):
-        # self.caracter = self.__obter_caracter()
-        if 'f' == self.caracter:
-            self.q47()
-        elif 's' == self.caracter:
-            self.q51()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q47(self):
-        # self.caracter = self.__obter_caracter()
-        if 'a' == self.caracter:
-            self.q48()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q48(self):
-        # self.caracter = self.__obter_caracter()
-        if 'c' == self.caracter:
-            self.q49()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-    def q49(self):
-        # self.caracter = self.__obter_caracter()
-        if 'a' == self.caracter:
-            self.q50()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q50(self): # reconhece o comando *fimfaca*
-
-    def q51(self):
-        # self.caracter = self.__obter_caracter()
-        if 'e' == self.caracter:
-            self.q52()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q52(self):  # reconhece o comando *fimse*
-
-    def q53(self):
-        # self.caracter = self.__obter_caracter()
-        if 'n' == self.caracter:
-            self.q54()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q54(self):
-        # self.caracter = self.__obter_caracter()
-        if 'i' == self.caracter:
-            self.q55()
-        elif 't' == self.caracter:
-            self.q59()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q55(self):
-        # self.caracter = self.__obter_caracter()
-        if 'c' == self.caracter:
-            self.q56()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
+    def q31(self, entrada): # reconhece entao
+        if self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('entao', 'entao')
+            return procura_na_lista(main.word)
         else:
+            return q25(1)
+
+    def q32(self, entrada):
+        if 'c' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q33(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'es')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q33(self, entrada):
+        if 'r' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q34(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'esc')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q34(self, entrada):
+        if 'e' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q35(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'escr')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q35(self, entrada):
+        if 'v' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q36(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'escre')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q36(self, entrada):
+        if 'a' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q37(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'escrev')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q37(self, entrada) #reconhece escreva
+        if not procura_na_lista(main.word):
+            push('escreva', 'escreva')
+        return procura_na_lista(main.word)    
+
+    def q38(self, entrada):
+        if 'a' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q39(scanner.entrada[i])
+        elif 'i' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q45(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'f')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q39(self, entrada):
+        if 'c' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q40(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'fa')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q40(self, entrada):
+        if 'a' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q41(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'fac')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q41(self, entrada):
+        if 'a' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q42(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'faca')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q42(self, entrada):
+        if 't' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q43(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'facaa')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+        def q43(self, entrada):
+        if 'e' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q44(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'facaat')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q44(self, entrada) # reconhece *facaate*
+        if not procura_na_lista(main.word):
+            push('facaate', 'facaate')
+        return procura_na_lista(main.word)   
+
+    def q45(self, entrada):
+        if 'm' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q46(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'fi')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q46(self, entrada):
+        if 'f' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q47(scanner.entrada[i])
+        elif 's' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q51(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('fim', 'fim')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q47(self, entrada):
+        if 'a' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q48(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'fimf')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q48(self, entrada):
+        if 'c' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q49(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'fimfa')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q49(self, entrada):
+        if 'a' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q50(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'fimfac')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q50(self, entrada) # reconhece *fimfaca*
+        if not procura_na_lista(main.word):
+            push('fimfaca', 'fimfaca')
+        return procura_na_lista(main.word)   
+
+    def q51(self, entrada):
+        if 'e' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q51(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'fims')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q52(self, entrada)  # reconhece *fimse*
+        if not procura_na_lista(main.word):
+            push('fimse', 'fimse')
+        return procura_na_lista(main.word)  
+
+    def q53(self, entrada):
+        if 'n' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q54(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'i')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q54(self, entrada):
+        if 'i' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q55(scanner.entrada[i])
+        elif 't' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q59(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'in')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q55(self, entrada):
+        if 'c' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q56(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'ini')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q56(self, entrada):
+        if 'i' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q57(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'inic')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q57(self, entrada):
+        if 'o' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q58(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'inici')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q58(self, entrada)  # reconhece *inicio*
+        if not procura_na_lista(main.word):
+            push('inicio', 'inicio')
+        return procura_na_lista(main.word)      
+
+    def q59(self, entrada):
+        if 'e' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q60(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'int')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q60(self, entrada):
+        if 'i' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q61(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'inte')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q61(self, entrada):
+        if 'r' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q62(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'intei')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q62(self, entrada):
+        if 'o' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q62(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'inteir')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q63(self, entrada)  # reconhece *inteiro*
+        if not procura_na_lista(main.word):
+            push('inteiro', 'inteiro')
+        return procura_na_lista(main.word)      
+
+    def q64(self, entrada):
+        if 'e' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q65(scanner.entrada[i])
+        elif 'i' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q68(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'l')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q65(self, entrada):
+        if 'i' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q66(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'le')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q66(self, entrada):
+        if 'a' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q67(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'lei')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
+
+    def q67(self, entrada) # reconhece *leia*
+        if not procura_na_lista(main.word):
+            push('leia', 'leia')
+        return procura_na_lista(main.word)  
+
+    def q68(self, entrada):
+        if 't' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q69(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'li')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
 
-    # implementa erro aqui
-    def q56(self):
-        # self.caracter = self.__obter_caracter()
-        if 'i' == self.caracter:
-            self.q57()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-    def q57(self):
-        # self.caracter = self.__obter_caracter()
-        if 'o' == self.caracter:
-            self.q58()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
+    def q69(self, entrada) # reconhece *lit*
+        if not procura_na_lista(main.word):
+            push('lit', 'lit')
+        return procura_na_lista(main.word)  
 
-    def q58():  # reconhece o estado *inicio*
+    def q70(self, entrada)
+        if 'e' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q71(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'r')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q59(self):
-        # self.caracter = self.__obter_caracter()
-        if 'e' == self.caracter:
-            self.q60()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
+    def q71(self, entrada):
+        if 'a' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q72(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 're')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q60(self):
-        # self.caracter = self.__obter_caracter()
-        if 'i' == self.caracter:
-            self.q61()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
+    def q72(self, entrada):
+        if 'l' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q73(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'rea')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q61(self):
-        # self.caracter = self.__obter_caracter()
-        if 'r' == self.caracter:
-            self.q62()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
+    def q73(self, entrada): # reconhece *real*
+        if not procura_na_lista(main.word):
+            push('real', 'real')
+        return procura_na_lista(main.word) 
 
-    def q62(self):
-        # self.caracter = self.__obter_caracter()
-        if 'o' == self.caracter:
-            self.q63()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
+    def q74(self, entrada):
+        if 'a' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q75(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'v')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q63():  # reconhece o estado *inteiro*
+    def q75(self, entrada):
+        if 'r' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q76(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'va')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q64(self):
-        # self.caracter = self.__obter_caracter()
-        if 'e' == self.caracter:
-            self.q65()
-        elif 'i' == self.caracter:
-            self.q68()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
+    def q76(self, entrada):
+        if 'i' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q77(scanner.entrada[i])
+        elif 'f' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q83(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'var')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q65(self):
-        # self.caracter = self.__obter_caracter()
-        if 'i' == self.caracter:
-            self.q66()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
+    def q77(self, entrada):
+        if 'n' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q78(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'vari')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q66(self):
-        # self.caracter = self.__obter_caracter()
-        if 'a' == self.caracter:
-            self.q67()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else:  # implementa erro aqui
 
-    def q67(): # reconhece o estado *leia*
+    def q78(self, entrada):
+        if 'i' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q79(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'varin')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q68(self):
-        # self.caracter = self.__obter_caracter()
-        if 't' == self.caracter:
-            self.q69()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
+    def q79(self, entrada):
+        if 'c' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q80(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'varini')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q69(): # reconhece o estado *lit*
+    def q80(self, entrada):
+        if 'i' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q81(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'varinic')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q70(self):
-        # self.caracter = self.__obter_caracter()
-        if 'e' == self.caracter:
-            self.q71()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
+    def q81(self, entrada):
+        if 'o' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q82(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'varinici')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q71(self):
-        # self.caracter = self.__obter_caracter()
-        if 'a' == self.caracter:
-            self.q72()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else:  # implementa erro aqui
-    def q72(self):
-        # self.caracter = self.__obter_caracter()
-        if 'l' == self.caracter:
-            self.q73()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
+    def q82(self, entrada): # reconhece o estado *varinicio*
+        if not procura_na_lista(main.word):
+            push('varinicio', 'varinicio')
+        return procura_na_lista(main.word) 
 
-    def q73(): # reconhece o estado *leia*
+    def q83(self, entrada):
+        if 'i' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q84(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'varf')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q74(self):
-        # self.caracter = self.__obter_caracter()
-        if 'a' == self.caracter:
-            self.q75()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q75(self):
-        # self.caracter = self.__obter_caracter()
-        if 'r' == self.caracter:
-            self.q76()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q76(self):
-        # self.caracter = self.__obter_caracter()
-        if 'i' == self.caracter:
-            self.q77()
-        if 'f' == self.caracter:
-            self.q83()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q77(self):
-        # self.caracter = self.__obter_caracter()
-        if 'n' == self.caracter:
-            self.q78()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: #implementa erro aqui
-
-    def q78(self):
-        # self.caracter = self.__obter_caracter()
-        if 'i' == self.caracter:
-            self.q79()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else:  # implementa erro aqui
-
-    def q79(self):
-        # self.caracter = self.__obter_caracter()
-        if 'c' == self.caracter:
-            self.q80()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else:  # implementa erro aqui
-
-    def q80(self):
-        # self.caracter = self.__obter_caracter()
-        if 'i' == self.caracter:
-            self.q81()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else:  # implementa erro aqui
-
-    def q81(self):
-        # self.caracter = self.__obter_caracter()
-        if 'o' == self.caracter:
-            self.q82()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q82(): # reconhece o estado *varinicio*
-
-    def q83(self):
-        # self.caracter = self.__obter_caracter()
-        if 'i' == self.caracter:
-            self.q84()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
-
-    def q84(self):
-        # self.caracter = self.__obter_caracter()
-        if 'm' == self.caracter:
-            self.q85()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else: # implementa erro aqui
+    def q84(self, entrada):
+        if 'm' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q85(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 'varfi')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
     def q85(): # reconhece o estado *varfim*
+        if not procura_na_lista(main.word):
+            push('varfim', 'varfim')
+        return procura_na_lista(main.word) 
 
-    def q86(self):
-        # self.caracter = self.__obter_caracter()
-        if 'e' == self.caracter:
-            self.q87()
-        elif self.caracter.isdigit() or self.caracter.islower() or self.caracter.isupper or self.caracter == '_'
-            self.q11()
-        elif self.caracter.isspace()  # reconheceu o lexema e deve ser lido o prox token
-            # ler prox lexema
-            # self.__lexema = self.__lexema[:len(self.__lexema) -1]
-            # self.__cabeca -= 1
-            # self.q10()
-        else:  # implementa erro aqui
+    def q86(self, entrada):
+        if 'e' == self.entrada:
+            contador_coluna += 1
+            i += 1
+            return q87(scanner.entrada[i])
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            contador_coluna += 1
+            i += 1
+            return q11(scanner.entrada[i])
+        elif self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('id', 's')
+            return procura_na_lista(main.word)
+        else: 
+            return q25(1)
 
-    def q87(): # reconhece o estado *se*
+    def q87(self, entrada): # reconhece o estado *se*
+        if self.entrada.isspace():
+            if not procura_na_lista(main.word):
+                push('se', 'se')
+            return procura_na_lista(main.word) 
+        else:
+            return q25(1)
 
+    def q88(self, entrada):
+        if self.entrada.isspace():
+            return None
+        else:
+            return q25(1)
 
     def erro(self, cod):
-        if(cod==1):
-            print("Erro " + cod + ". Caractere inválido, linha " + contador_linha + ", coluna " + contador_coluna + ".\n")
+        if(cod==2):
+            print("Erro " + cod + ". Aspas vêm ao final de constantes literais. Linha " + contador_linha + ", coluna " + contador_coluna + ".\n")
+        elif(cod==3):
+            print("Erro " + cod + ". Chaves devem fechar comentários. Linha " + contador_linha + ", coluna " + contador_coluna + ".\n")
+        else:
+            print("Erro " + cod + ". caractere inválido, linha " + contador_linha + ", coluna " + contador_coluna + ".\n")
 
     def main(self, fonte):
         if not os.path.exists(fonte)
