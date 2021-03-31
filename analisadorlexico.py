@@ -1272,5 +1272,5 @@ class analisador:
                     retorno_scanner = scanner(word)
                     if(casefold(retorno_scanner)=="erro*")
                         erro(int(retorno_scanner[5:6]))     
-                    else"
+                    else
                         print("Classe: " + retorno_scanner.classe + ", lexema: " + retorno_scanner.lexema + ", tipo: " + retorno_scanner.tipo + ".\n")
