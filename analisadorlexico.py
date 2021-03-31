@@ -34,12 +34,10 @@ class token:
 class analisador:
 
     def scanner(self, entrada):
-        global i = 0 
-     #   while i < len(entrada)
+        global i 
+        i = 0 
         contador_coluna += 1
         return q0(entrada[i])
-        #se o retorno do q0 for id, verificar na tabela e dar push se nao tiver la
-        #se nao for id, só retorna o token reconhecido
 
     def q0(self, entrada):
 
@@ -204,7 +202,7 @@ class analisador:
             return procura_na_lista(main.word)
         else: 
             return q25(1)
-    
+
     def q7(self, entrada):
         if self.entrada == '\.':
             contador_coluna += 1
@@ -227,17 +225,14 @@ class analisador:
 
     def q9(self, entrada): #Abre { comentário
         if self.entrada == '\.':
+        while self.entrada:
             contador_coluna += 1
             i += 1
-            return q9(scanner.entrada[i])
-        elif self.entrada == '}':
-            contador_coluna += 1
-            i += 1
-            return q10()
-        else: 
-            return q25(1)
+            if self.entrada == '}':
+                return q10(scanner.entrada[i])
+        return q25(1)
 
-    def q10(self, entrada) # fecha } comentário
+    def q10(self, entrada): # fecha } comentário
         if self.entrada.isspace():
             return None
         else: 
@@ -440,7 +435,7 @@ class analisador:
         if 'o' == self.entrada:
             contador_coluna += 1
             i += 1
-            return q31(scanner.enrada[i])
+            return q31(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
             contador_coluna += 1
             i += 1
@@ -540,7 +535,7 @@ class analisador:
         else: 
             return q25(1)
 
-    def q37(self, entrada) #reconhece escreva
+    def q37(self, entrada): #reconhece escreva
         if not procura_na_lista(main.word):
             push('escreva', 'escreva')
         return procura_na_lista(main.word)    
@@ -629,7 +624,7 @@ class analisador:
         else: 
             return q25(1)
 
-        def q43(self, entrada):
+    def q43(self, entrada):
         if 'e' == self.entrada:
             contador_coluna += 1
             i += 1
@@ -645,7 +640,7 @@ class analisador:
         else: 
             return q25(1)
 
-    def q44(self, entrada) # reconhece *facaate*
+    def q44(self, entrada): # reconhece *facaate*
         if not procura_na_lista(main.word):
             push('facaate', 'facaate')
         return procura_na_lista(main.word)   
@@ -734,7 +729,7 @@ class analisador:
         else: 
             return q25(1)
 
-    def q50(self, entrada) # reconhece *fimfaca*
+    def q50(self, entrada): # reconhece *fimfaca*
         if not procura_na_lista(main.word):
             push('fimfaca', 'fimfaca')
         return procura_na_lista(main.word)   
@@ -755,7 +750,7 @@ class analisador:
         else: 
             return q25(1)
 
-    def q52(self, entrada)  # reconhece *fimse*
+    def q52(self, entrada):  # reconhece *fimse*
         if not procura_na_lista(main.word):
             push('fimse', 'fimse')
         return procura_na_lista(main.word)  
@@ -844,7 +839,7 @@ class analisador:
         else: 
             return q25(1)
 
-    def q58(self, entrada)  # reconhece *inicio*
+    def q58(self, entrada):  # reconhece *inicio*
         if not procura_na_lista(main.word):
             push('inicio', 'inicio')
         return procura_na_lista(main.word)      
@@ -913,7 +908,7 @@ class analisador:
         else: 
             return q25(1)
 
-    def q63(self, entrada)  # reconhece *inteiro*
+    def q63(self, entrada):  # reconhece *inteiro*
         if not procura_na_lista(main.word):
             push('inteiro', 'inteiro')
         return procura_na_lista(main.word)      
@@ -970,7 +965,7 @@ class analisador:
         else: 
             return q25(1)
 
-    def q67(self, entrada) # reconhece *leia*
+    def q67(self, entrada): # reconhece *leia*
         if not procura_na_lista(main.word):
             push('leia', 'leia')
         return procura_na_lista(main.word)  
@@ -992,12 +987,12 @@ class analisador:
             return q25(1)
 
 
-    def q69(self, entrada) # reconhece *lit*
+    def q69(self, entrada): # reconhece *lit*
         if not procura_na_lista(main.word):
             push('lit', 'lit')
         return procura_na_lista(main.word)  
 
-    def q70(self, entrada)
+    def q70(self, entrada):
         if 'e' == self.entrada:
             contador_coluna += 1
             i += 1
@@ -1267,30 +1262,30 @@ class analisador:
         if not os.path.exists(fonte)
             print("Arquivo não encontrado.\n")
         else 
+            with open(filename, "r+") as f:
+                fonte.write("$")
+                push('inicio', 'inicio')
+                push('varinicio', 'varinicio')
+                push('varfim', 'varfim')
+                push('escreva', 'escreva')
+                push('leia', 'leia')
+                push('se', 'se')
+                push('entao', 'entao')
+                push('fimse', 'fimse')
+                push('facaate', 'facaate')
+                push('fimfaca', 'fimfaca')
+                push('fim', 'fim')
+                push('inteiro', 'inteiro')
+                push('lit', 'lit')
+                push('real', 'real')
 
-            fonte.write("$")
-            push('inicio', 'inicio')
-            push('varinicio', 'varinicio')
-            push('varfim', 'varfim')
-            push('escreva', 'escreva')
-            push('leia', 'leia')
-            push('se', 'se')
-            push('entao', 'entao')
-            push('fimse', 'fimse')
-            push('facaate', 'facaate')
-            push('fimfaca', 'fimfaca')
-            push('fim', 'fim')
-            push('inteiro', 'inteiro')
-            push('lit', 'lit')
-            push('real', 'real')
-
-            global contador_linha = 0        
-            for line in fonte
-                contador_linha += 1
-                global contador_coluna = 0
-                for word in line.split():
-                    retorno_scanner = scanner(word)
-                    if(casefold(retorno_scanner)=="erro*")
-                        erro(int(retorno_scanner[5:6]))     
-                    else
-                        print("Classe: " + retorno_scanner.classe + ", lexema: " + retorno_scanner.lexema + ", tipo: " + retorno_scanner.tipo + ".\n")
+                global contador_linha = 0        
+                for line in fonte
+                    contador_linha += 1
+                    global contador_coluna = 0
+                    for word in line.split():
+                        retorno_scanner = scanner(word)
+                        if(casefold(retorno_scanner)=="erro*")
+                            erro(int(retorno_scanner[5:6]))     
+                        else
+                            print("Classe: " + retorno_scanner.classe + ", lexema: " + retorno_scanner.lexema + ", tipo: " + retorno_scanner.tipo + ".\n")
