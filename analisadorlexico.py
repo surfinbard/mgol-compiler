@@ -1,15 +1,9 @@
-import os
+import os.path
 
-#checar requerimentos
-#qual é a flag EOF? tratar estado 12.
+class lista:
+    def __init__(self):
+        self.raiz = None
 
-class token:
-    def __init__(self, proximo=None, anterior=None, classe=None, lexema=None, tipo=NULL):
-        self.proximo = proximo
-        self.anterior = anterior
-        self.classe = classe
-        self.lexema = lexema
-    
     def push(self, classe, lexema):
  
         novo_token = token(classe = classe, lexema = lexema)
@@ -20,7 +14,7 @@ class token:
         self.raiz.anterior = novo_token
         novo_token.proximo = self.raiz
         self.raiz = novo_token
-    
+
     def procura_na_lista(self, lexema):
         temp = self.raiz
         while temp:
@@ -31,6 +25,14 @@ class token:
             return False
         return temp
 
+class token:
+    def __init__(self, proximo=None, anterior=None, classe=None, lexema=None, tipo=None):
+        self.proximo = proximo
+        self.anterior = anterior
+        self.classe = classe
+        self.lexema = lexema
+        self.tipo = "Nulo"
+    
 class analisador:
 
     def scanner(self, entrada):
@@ -224,7 +226,6 @@ class analisador:
             return q25(2)
 
     def q9(self, entrada): #Abre { comentário
-        if self.entrada == '\.':
         while self.entrada:
             contador_coluna += 1
             i += 1
@@ -1258,34 +1259,44 @@ class analisador:
         else:
             print("Erro " + cod + ". caractere inválido, linha " + contador_linha + ", coluna " + contador_coluna + ".\n")
 
-    def main(self, fonte):
-        if not os.path.exists(fonte)
-            print("Arquivo não encontrado.\n")
-        else 
-            with open(filename, "r+") as f:
-                fonte.write("$")
-                push('inicio', 'inicio')
-                push('varinicio', 'varinicio')
-                push('varfim', 'varfim')
-                push('escreva', 'escreva')
-                push('leia', 'leia')
-                push('se', 'se')
-                push('entao', 'entao')
-                push('fimse', 'fimse')
-                push('facaate', 'facaate')
-                push('fimfaca', 'fimfaca')
-                push('fim', 'fim')
-                push('inteiro', 'inteiro')
-                push('lit', 'lit')
-                push('real', 'real')
+    def main():
 
-                global contador_linha = 0        
-                for line in fonte
-                    contador_linha += 1
-                    global contador_coluna = 0
-                    for word in line.split():
-                        retorno_scanner = scanner(word)
-                        if(casefold(retorno_scanner)=="erro*")
-                            erro(int(retorno_scanner[5:6]))     
-                        else
-                            print("Classe: " + retorno_scanner.classe + ", lexema: " + retorno_scanner.lexema + ", tipo: " + retorno_scanner.tipo + ".\n")
+        if not os.path.exists('fonte.txt'):
+            print("Arquivo não encontrado.\n")
+        else: 
+            fonte = open('fonte.txt', 'r+')
+            fonte.write("$")
+
+            l = lista()
+
+            l.push('inicio', 'inicio')
+            l.push('varinicio', 'varinicio')
+            l.push('varfim', 'varfim')
+            l.push('escreva', 'escreva')
+            l.push('leia', 'leia')
+            l.push('se', 'se')
+            l.push('entao', 'entao')
+            l.push('fimse', 'fimse')
+            l.push('facaate', 'facaate')
+            l.push('fimfaca', 'fimfaca')
+            l.push('fim', 'fim')
+            l.push('inteiro', 'inteiro')
+            l.push('lit', 'lit')
+            l.push('real', 'real')
+
+            global contador_linha 
+            contador_linha = 0   
+
+            for line in fonte:
+                contador_linha += 1
+                global contador_coluna 
+                contador_coluna = 0
+                for word in line.split():
+                    retorno_scanner = scanner(word)
+                    if(casefold(retorno_scanner)=="erro*"):
+                        erro(int(retorno_scanner[5:6]))     
+                    else:
+                        print("Classe: " + retorno_scanner.classe + ", lexema: " + retorno_scanner.lexema + ", tipo: " + retorno_scanner.tipo + ".\n")
+
+    if __name__ == '__main__':
+        main()
