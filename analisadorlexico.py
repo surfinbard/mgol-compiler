@@ -1,15 +1,9 @@
-import os
+import os.path
+contador_coluna = 0
+class lista:
+    def __init__(self):
+        self.raiz = None
 
-#checar requerimentos
-#qual é a flag EOF? tratar estado 12.
-
-class token:
-    def __init__(self, proximo=None, anterior=None, classe=None, lexema=None, tipo=NULL):
-        self.proximo = proximo
-        self.anterior = anterior
-        self.classe = classe
-        self.lexema = lexema
-    
     def push(self, classe, lexema):
  
         novo_token = token(classe = classe, lexema = lexema)
@@ -20,31 +14,38 @@ class token:
         self.raiz.anterior = novo_token
         novo_token.proximo = self.raiz
         self.raiz = novo_token
-    
+
     def procura_na_lista(self, lexema):
         temp = self.raiz
         while temp:
             if temp.lexema == lexema:
                 break
-            temp = temp.next
+            temp = temp.proximo
         if temp == None:
             return False
         return temp
 
+class token:
+    def __init__(self, proximo=None, anterior=None, classe=None, lexema=None, tipo=None):
+        self.proximo = proximo
+        self.anterior = anterior
+        self.classe = classe
+        self.lexema = lexema
+        self.tipo = "Nulo"
+    
 class analisador:
-
+   
     def scanner(self, entrada):
         global i 
         i = 0 
-     #   while i < len(entrada)
+        global contador_coluna
         contador_coluna += 1
         return q0(entrada[i])
-        #se o retorno do q0 for id, verificar na tabela e dar push se nao tiver la
-        #se nao for id, só retorna o token reconhecido
 
     def q0(self, entrada):
-
-        if entrada.isdigit():
+        global contador_coluna
+        global i
+        if entrada.isdigit(): 
             contador_coluna += 1
             i += 1
             return q1(scanner.entrada[i])
@@ -64,7 +65,7 @@ class analisador:
             contador_coluna += 1
             i += 1
             return q17(scanner.entrada[i])
-        elif '>' == entrada:
+        elif '>' == entrada:    
             contador_coluna += 1
             i += 1
             return q18(scanner.entrada[i])
@@ -80,7 +81,7 @@ class analisador:
             contador_coluna += 1
             i += 1
             return q22(scanner.entrada[i])
-        elif ';' == entrada:
+        elif ';' == entrada: 
             contador_coluna += 1
             i += 1
             return q23(scanner.entrada[i])
@@ -131,11 +132,13 @@ class analisador:
 
 
     def q1(self, entrada): # token *num*
+        global contador_coluna
+        global i
         if self.entrada.isdigit():
             contador_coluna += 1
             i += 1
             return q1(scanner.entrada[i])
-        elif '\.' == self.entrada:
+        elif '\\.' == self.entrada:
             contador_coluna += 1
             i += 1
             return q2(scanner.entrada[i])
@@ -151,7 +154,10 @@ class analisador:
             return q25(1)
 
     def q2(self, entrada):  
+        global contador_coluna
+        global i
         if self.entrada.isdigit():
+            
             contador_coluna += 1
             i += 1
             return q3(scanner.entrada[i])
@@ -159,7 +165,10 @@ class analisador:
             return q25(1)
 
     def q3(self, entrada): # token *num*
+        global contador_coluna
+        global i
         if self.entrada.isdigit():
+            
             contador_coluna += 1
             i += 1
             return q3(scanner.entrada[i])
@@ -175,6 +184,8 @@ class analisador:
             return q25(1)
 
     def q4(self, entrada):
+        global contador_coluna
+        global i
         if self.entrada.isdigit():
             contador_coluna += 1
             i += 1
@@ -187,6 +198,8 @@ class analisador:
             return q25(1)
 
     def q5(self, entrada): 
+        global contador_coluna
+        global i
         if self.entrada.isdigit():
             contador_coluna += 1
             i += 1
@@ -195,6 +208,8 @@ class analisador:
             return q25(1)
 
     def q6(self, entrada): # token *num*
+        global contador_coluna
+        global i
         if self.entrada.isdigit():
             contador_coluna += 1
             i += 1
@@ -205,13 +220,16 @@ class analisador:
             return procura_na_lista(main.word)
         else: 
             return q25(1)
-    
+
     def q7(self, entrada):
-        if self.entrada == '\.':
+        global contador_coluna
+        if self.entrada == '\\.':
+            
             contador_coluna += 1
             i += 1
             return q7(scanner.entrada[i])
         elif self.entrada == '"':
+            
             contador_coluna += 1
             i += 1
             return q8(scanner.entrada[i])
@@ -227,16 +245,14 @@ class analisador:
             return q25(2)
 
     def q9(self, entrada): #Abre { comentário
-        if self.entrada == '\.':
+        global contador_coluna
+        while self.entrada:
+            
             contador_coluna += 1
             i += 1
-            return q9(scanner.entrada[i])
-        elif self.entrada == '}':
-            contador_coluna += 1
-            i += 1
-            return q10()
-        else: 
-            return q25(1)
+            if self.entrada == '}':
+                return q10(scanner.entrada[i])
+        return q25(1)
 
     def q10(self, entrada): # fecha } comentário
         if self.entrada.isspace():
@@ -245,7 +261,9 @@ class analisador:
             return q25(3)
 
     def q11(self, entrada): # reconhece *id*
+        global contador_coluna
         if self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_':
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -265,15 +283,19 @@ class analisador:
             return q25(1)
 
     def q13(self, entrada): # reconhece *<*
+        global contador_coluna
         if self.entrada == '-':
+            
             contador_coluna += 1
             i += 1
             return q16(scanner.entrada[i])
         elif self.entrada == '=':
+            
             contador_coluna += 1
             i += 1
             return q15(scanner.entrada[i])
         elif self.entrada == '>':
+            
             contador_coluna += 1
             i += 1
             return q14(scanner.entrada[i])
@@ -318,6 +340,7 @@ class analisador:
 
     def q18(self, entrada): # reconhece *>
         if self.entrada == '=':
+            global contador_coluna
             contador_coluna += 1
             i += 1
             return q19(self.entrada[i])
@@ -386,15 +409,19 @@ class analisador:
             return q25(1)
 
     def q27(self, entrada): 
+        global contador_coluna
         if 'n' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q28(scanner.entrada[i])
         elif 's' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q32(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_':
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -406,11 +433,14 @@ class analisador:
             return q25(1)
 
     def q28(self, entrada):
+        global contador_coluna
         if 't' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q29(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -422,11 +452,14 @@ class analisador:
             return q25(1)
 
     def q29(self, entrada):
+        global contador_coluna
         if 'a' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q30(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -438,11 +471,14 @@ class analisador:
             return q25(1)
 
     def q30(self, entrada):
+        global contador_coluna
         if 'o' == self.entrada:
+            
             contador_coluna += 1
             i += 1
-            return q31(scanner.enrada[i])
+            return q31(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -462,11 +498,14 @@ class analisador:
             return q25(1)
 
     def q32(self, entrada):
+        global contador_coluna
         if 'c' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q33(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -478,11 +517,14 @@ class analisador:
             return q25(1)
 
     def q33(self, entrada):
+        global contador_coluna
         if 'r' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q34(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -494,11 +536,14 @@ class analisador:
             return q25(1)
 
     def q34(self, entrada):
+        global contador_coluna
         if 'e' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q35(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -510,11 +555,14 @@ class analisador:
             return q25(1)
 
     def q35(self, entrada):
+        global contador_coluna
         if 'v' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q36(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -526,11 +574,14 @@ class analisador:
             return q25(1)
 
     def q36(self, entrada):
+        global contador_coluna
         if 'a' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q37(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -547,15 +598,19 @@ class analisador:
         return procura_na_lista(main.word)    
 
     def q38(self, entrada):
+        global contador_coluna
         if 'a' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q39(scanner.entrada[i])
         elif 'i' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q45(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -567,11 +622,14 @@ class analisador:
             return q25(1)
 
     def q39(self, entrada):
+        global contador_coluna
         if 'c' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q40(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -583,11 +641,14 @@ class analisador:
             return q25(1)
 
     def q40(self, entrada):
+        global contador_coluna
         if 'a' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q41(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -599,11 +660,14 @@ class analisador:
             return q25(1)
 
     def q41(self, entrada):
+        global contador_coluna
         if 'a' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q42(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -615,11 +679,14 @@ class analisador:
             return q25(1)
 
     def q42(self, entrada):
+        global contador_coluna
         if 't' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q43(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -631,11 +698,14 @@ class analisador:
             return q25(1)
 
     def q43(self, entrada):
+        global contador_coluna
         if 'e' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q44(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -652,11 +722,14 @@ class analisador:
         return procura_na_lista(main.word)   
 
     def q45(self, entrada):
+        global contador_coluna
         if 'm' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q46(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -668,15 +741,19 @@ class analisador:
             return q25(1)
 
     def q46(self, entrada):
+        global contador_coluna
         if 'f' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q47(scanner.entrada[i])
         elif 's' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q51(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -688,11 +765,14 @@ class analisador:
             return q25(1)
 
     def q47(self, entrada):
+        global contador_coluna
         if 'a' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q48(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -704,12 +784,16 @@ class analisador:
             return q25(1)
 
     def q48(self, entrada):
+        global contador_coluna
         if 'c' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q49(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
+
             i += 1
             return q11(scanner.entrada[i])
         elif self.entrada.isspace():
@@ -720,11 +804,14 @@ class analisador:
             return q25(1)
 
     def q49(self, entrada):
+        global contador_coluna
         if 'a' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q50(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -741,11 +828,14 @@ class analisador:
         return procura_na_lista(main.word)   
 
     def q51(self, entrada):
+        global contador_coluna
         if 'e' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q51(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -762,6 +852,7 @@ class analisador:
         return procura_na_lista(main.word)  
 
     def q53(self, entrada):
+        global contador_coluna
         if 'n' == self.entrada:
             contador_coluna += 1
             i += 1
@@ -778,6 +869,7 @@ class analisador:
             return q25(1)
 
     def q54(self, entrada):
+        global contador_coluna
         if 'i' == self.entrada:
             contador_coluna += 1
             i += 1
@@ -786,7 +878,7 @@ class analisador:
             contador_coluna += 1
             i += 1
             return q59(scanner.entrada[i])
-        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_':  
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -798,6 +890,7 @@ class analisador:
             return q25(1)
 
     def q55(self, entrada):
+        global contador_coluna
         if 'c' == self.entrada:
             contador_coluna += 1
             i += 1
@@ -814,6 +907,7 @@ class analisador:
             return q25(1)
 
     def q56(self, entrada):
+        global contador_coluna
         if 'i' == self.entrada:
             contador_coluna += 1
             i += 1
@@ -830,11 +924,12 @@ class analisador:
             return q25(1)
 
     def q57(self, entrada):
-        if 'o' == self.entrada:
+        global contador_coluna
+        if 'o' == self.entrada:    
             contador_coluna += 1
             i += 1
             return q58(scanner.entrada[i])
-        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_':  
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -851,11 +946,12 @@ class analisador:
         return procura_na_lista(main.word)      
 
     def q59(self, entrada):
-        if 'e' == self.entrada:
+        global contador_coluna
+        if 'e' == self.entrada:  
             contador_coluna += 1
             i += 1
             return q60(scanner.entrada[i])
-        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_':   
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -867,11 +963,12 @@ class analisador:
             return q25(1)
 
     def q60(self, entrada):
+        global contador_coluna
         if 'i' == self.entrada:
             contador_coluna += 1
             i += 1
             return q61(scanner.entrada[i])
-        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_':  
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -883,7 +980,8 @@ class analisador:
             return q25(1)
 
     def q61(self, entrada):
-        if 'r' == self.entrada:
+        global contador_coluna
+        if 'r' == self.entrada: 
             contador_coluna += 1
             i += 1
             return q62(scanner.entrada[i])
@@ -899,11 +997,12 @@ class analisador:
             return q25(1)
 
     def q62(self, entrada):
-        if 'o' == self.entrada:
+        global contador_coluna
+        if 'o' == self.entrada: 
             contador_coluna += 1
             i += 1
             return q62(scanner.entrada[i])
-        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_':  
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -920,15 +1019,16 @@ class analisador:
         return procura_na_lista(main.word)      
 
     def q64(self, entrada):
-        if 'e' == self.entrada:
+        global contador_coluna
+        if 'e' == self.entrada:  
             contador_coluna += 1
             i += 1
             return q65(scanner.entrada[i])
-        elif 'i' == self.entrada:
+        elif 'i' == self.entrada:   
             contador_coluna += 1
             i += 1
             return q68(scanner.entrada[i])
-        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_':  
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -940,7 +1040,8 @@ class analisador:
             return q25(1)
 
     def q65(self, entrada):
-        if 'i' == self.entrada:
+        global contador_coluna
+        if 'i' == self.entrada: 
             contador_coluna += 1
             i += 1
             return q66(scanner.entrada[i])
@@ -956,11 +1057,12 @@ class analisador:
             return q25(1)
 
     def q66(self, entrada):
+        global contador_coluna
         if 'a' == self.entrada:
             contador_coluna += 1
             i += 1
             return q67(scanner.entrada[i])
-        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_':  
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -977,6 +1079,7 @@ class analisador:
         return procura_na_lista(main.word)  
 
     def q68(self, entrada):
+        global contador_coluna
         if 't' == self.entrada:
             contador_coluna += 1
             i += 1
@@ -999,11 +1102,13 @@ class analisador:
         return procura_na_lista(main.word)  
 
     def q70(self, entrada):
-        if 'e' == self.entrada:
+        global contador_coluna
+        if 'e' == self.entrada: 
             contador_coluna += 1
             i += 1
             return q71(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -1015,11 +1120,13 @@ class analisador:
             return q25(1)
 
     def q71(self, entrada):
-        if 'a' == self.entrada:
+        global contador_coluna
+        if 'a' == self.entrada:    
             contador_coluna += 1
             i += 1
             return q72(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -1031,11 +1138,14 @@ class analisador:
             return q25(1)
 
     def q72(self, entrada):
+        global contador_coluna
         if 'l' == self.entrada:
+            
             contador_coluna += 1
             i += 1
             return q73(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -1052,11 +1162,12 @@ class analisador:
         return procura_na_lista(main.word) 
 
     def q74(self, entrada):
-        if 'a' == self.entrada:
+        global contador_coluna
+        if 'a' == self.entrada:  
             contador_coluna += 1
             i += 1
             return q75(scanner.entrada[i])
-        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_':   
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -1068,11 +1179,13 @@ class analisador:
             return q25(1)
 
     def q75(self, entrada):
-        if 'r' == self.entrada:
+        global contador_coluna
+        if 'r' == self.entrada: 
             contador_coluna += 1
             i += 1
             return q76(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -1084,15 +1197,17 @@ class analisador:
             return q25(1)
 
     def q76(self, entrada):
-        if 'i' == self.entrada:
+        global contador_coluna
+        if 'i' == self.entrada: 
             contador_coluna += 1
             i += 1
             return q77(scanner.entrada[i])
-        elif 'f' == self.entrada:
+        elif 'f' == self.entrada:  
             contador_coluna += 1
             i += 1
             return q83(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -1104,11 +1219,13 @@ class analisador:
             return q25(1)
 
     def q77(self, entrada):
-        if 'n' == self.entrada:
+        global contador_coluna
+        if 'n' == self.entrada:   
             contador_coluna += 1
             i += 1
             return q78(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -1121,11 +1238,12 @@ class analisador:
 
 
     def q78(self, entrada):
-        if 'i' == self.entrada:
+        global contador_coluna
+        if 'i' == self.entrada:  
             contador_coluna += 1
             i += 1
             return q79(scanner.entrada[i])
-        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_':  
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -1137,11 +1255,13 @@ class analisador:
             return q25(1)
 
     def q79(self, entrada):
-        if 'c' == self.entrada:
+        global contador_coluna
+        if 'c' == self.entrada: 
             contador_coluna += 1
             i += 1
             return q80(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -1153,11 +1273,13 @@ class analisador:
             return q25(1)
 
     def q80(self, entrada):
+        global contador_coluna
         if 'i' == self.entrada:
             contador_coluna += 1
             i += 1
             return q81(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -1169,11 +1291,13 @@ class analisador:
             return q25(1)
 
     def q81(self, entrada):
+        global contador_coluna
         if 'o' == self.entrada:
             contador_coluna += 1
             i += 1
             return q82(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -1190,11 +1314,13 @@ class analisador:
         return procura_na_lista(main.word) 
 
     def q83(self, entrada):
-        if 'i' == self.entrada:
+        global contador_coluna
+        if 'i' == self.entrada:    
             contador_coluna += 1
             i += 1
             return q84(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -1206,11 +1332,13 @@ class analisador:
             return q25(1)
 
     def q84(self, entrada):
-        if 'm' == self.entrada:
+        global contador_coluna
+        if 'm' == self.entrada:    
             contador_coluna += 1
             i += 1
             return q85(scanner.entrada[i])
         elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+            
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -1227,11 +1355,12 @@ class analisador:
         return procura_na_lista(main.word) 
 
     def q86(self, entrada):
-        if 'e' == self.entrada:
+        global contador_coluna
+        if 'e' == self.entrada:  
             contador_coluna += 1
             i += 1
             return q87(scanner.entrada[i])
-        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_': 
+        elif self.entrada.isdigit() or self.entrada.isalpha() or self.entrada == '_':   
             contador_coluna += 1
             i += 1
             return q11(scanner.entrada[i])
@@ -1264,34 +1393,44 @@ class analisador:
         else:
             print("Erro " + cod + ". caractere inválido, linha " + contador_linha + ", coluna " + contador_coluna + ".\n")
 
-    def main(self, fonte):
-        if not os.path.exists(fonte)
+def main():
+        Ana = analisador()
+        if not os.path.exists('fonte.txt'):
             print("Arquivo não encontrado.\n")
-        else 
-
+        else: 
+            fonte = open('fonte.txt', 'r+')
             fonte.write("$")
-            push('inicio', 'inicio')
-            push('varinicio', 'varinicio')
-            push('varfim', 'varfim')
-            push('escreva', 'escreva')
-            push('leia', 'leia')
-            push('se', 'se')
-            push('entao', 'entao')
-            push('fimse', 'fimse')
-            push('facaate', 'facaate')
-            push('fimfaca', 'fimfaca')
-            push('fim', 'fim')
-            push('inteiro', 'inteiro')
-            push('lit', 'lit')
-            push('real', 'real')
 
-            global contador_linha = 0        
-            for line in fonte
+            l = lista()
+
+            l.push('inicio', 'inicio')
+            l.push('varinicio', 'varinicio')
+            l.push('varfim', 'varfim')
+            l.push('escreva', 'escreva')
+            l.push('leia', 'leia')
+            l.push('se', 'se')
+            l.push('entao', 'entao')
+            l.push('fimse', 'fimse')
+            l.push('facaate', 'facaate')
+            l.push('fimfaca', 'fimfaca')
+            l.push('fim', 'fim')
+            l.push('inteiro', 'inteiro')
+            l.push('lit', 'lit')
+            l.push('real', 'real')
+
+            global contador_linha 
+            contador_linha = 0   
+
+            for line in fonte:
                 contador_linha += 1
-                global contador_coluna = 0
+                global contador_coluna 
+                contador_coluna = 0
                 for word in line.split():
-                    retorno_scanner = scanner(word)
-                    if(casefold(retorno_scanner)=="erro*")
+                    retorno_scanner = Ana.scanner(word)
+                    if(casefold(retorno_scanner)=="erro*"):
                         erro(int(retorno_scanner[5:6]))     
-                    else
+                    else:
                         print("Classe: " + retorno_scanner.classe + ", lexema: " + retorno_scanner.lexema + ", tipo: " + retorno_scanner.tipo + ".\n")
+
+    #if _name_ == '_main_':
+    #   main()
