@@ -1,5 +1,7 @@
 import os.path
 
+#constantes literais
+
 i = 0
 contador_coluna = 0
 palavra = ""
@@ -38,1451 +40,1300 @@ class token:
         self.tipo = "Nulo"
 
 class analisador:
-    lista = lista()
-    def scanner(self): 
+
+    def __init__(self, l):
+        self.l = l
+
+    def scanner(self, palavra, l): 
+        global i 
+        i = 0
+        global contador_coluna
+        return self.q0(palavra, l)
+
+    def q0(self, palavra, l):
+        global contador_coluna
+        global i
+        contador_coluna += 1
+        if palavra[i:i+1].isdigit(): 
+            return self.q1(palavra, l)
+        elif palavra[i:i+1].isspace():
+            return self.q0(palavra, l)
+        elif '"' == palavra[i:i+1]:
+            return self.q7(palavra, l)
+        elif '{' == palavra[i:i+1]:
+            return self.q9(palavra, l)
+        elif '<' == palavra[i:i+1]:
+            return self.q13(palavra, l)
+        elif '=' == palavra[i:i+1]:
+            return self.q17(palavra, l)
+        elif '>' == palavra[i:i+1]:    
+            return self.q18(palavra, l)
+        elif '+' == palavra[i:i+1] or '-' == palavra[i:i+1] or '*' == palavra[i:i+1] or '/' == palavra[i:i+1]:
+            return self.q20(palavra, l)
+        elif '(' == palavra[i:i+1]:
+            return self.q21(palavra, l)
+        elif ')' == palavra[i:i+1]:
+            return self.q22(palavra, l)
+        elif ';' == palavra[i:i+1]: 
+            return self.q23(palavra, l)
+        elif ',' == palavra[i:i+1]:
+            return self.q24(palavra, l)
+        elif 'e' == palavra[i:i+1]:
+            return self.q27(palavra, l)
+        elif 'f' == palavra[i:i+1]:
+            return self.q38(palavra, l)
+        elif 'i' == palavra[i:i+1]:
+            return self.q53(palavra, l)
+        elif 'l' == palavra[i:i+1]:
+            return self.q64(palavra, l)
+        elif 'r' == palavra[i:i+1]:
+            return self.q70(palavra, l)
+        elif 'v' == palavra[i:i+1]:
+            return self.q74(palavra, l)
+        elif 's' == palavra[i:i+1]:
+            return self.q86(palavra, l)
+        elif palavra[i:i+1].isalpha():
+            return self.q11(palavra, l)
+        elif '\\' == palavra[i:i+1]:
+            return self.q26(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+
+    def q1(self, palavra, l): # token *num*
+        global contador_coluna
+        global i
+        contador_coluna += 1
+        if palavra[i:i+1].isspace(): 
+            if not self.l.procura_na_lista(palavra):
+                l.push('NUM', palavra[i:i+1])
+            return self.l.procura_na_lista(palavra)        
+        i += 1
+        if palavra[i:i+1].isdigit():
+            return self.q1(palavra, l)
+        elif '\\.' == palavra[i:i+1]:
+            return self.q2(palavra, l)
+        elif 'e' == palavra[i:i+1] or 'E' == palavra[i:i+1]: 
+            return self.q4(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q2(self, palavra, l):  
+        global contador_coluna
+        global i
+        contador_coluna += 1
+        i += 1
+        if palavra[i:i+1].isdigit():
+            return self.q3(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q3(self, palavra, l): # token *num*
+        global contador_coluna
+        global i
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('NUM', palavra)
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if palavra[i:i+1].isdigit():
+            return self.q3(palavra, l)
+        elif 'e' == palavra[i:i+1] or 'E' == palavra[i:i+1]: 
+            return self.q4(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q4(self, palavra, l):
+        global contador_coluna
+        global i
+        contador_coluna += 1
+        i += 1
+        if palavra[i:i+1].isdigit():
+            return self.q6(palavra, l)
+        elif '+' == palavra[i:i+1] or '-' == palavra[i:i+1]: 
+            return self.q5(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q5(self, palavra, l): 
+        global contador_coluna
+        global i
+        contador_coluna += 1
+        i += 1
+        if palavra[i:i+1].isdigit():
+            return self.q6(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q6(self, palavra, l): # token *num*
+        global contador_coluna
+        global i
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('NUM', palavra)
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if palavra[i:i+1].isdigit():
+            return self.q6(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q7(self, palavra, l):
+        global i
+        global contador_coluna
+        while palavra[i:i+1]:
+            contador_coluna += 1
+            i += 1
+            if palavra[i:i+1] == '"':
+                return self.q8(palavra, l)
+            self.q7(palavra, l)
+        return self.q25(1, palavra, l)
+
+    def q8(self, palavra, l): # token *lit*
+        global i
         global contador_coluna
         contador_coluna += 1
-        i = 0
-        return self.q0()
-
-    def q0(self):
-        global contador_coluna
-        global i
-        if palavra[i:i+1].isdigit(): 
-            contador_coluna += 1
-            i += 1
-            return self.q1()
-        elif '"' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q7()
-        elif '{' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q9()
-        elif '<' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q13()
-        elif '=' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q17()
-        elif '>' == palavra[i:i+1]:    
-            contador_coluna += 1
-            i += 1
-            return self.q18()
-        elif '+' == palavra[i:i+1] or '-' == palavra[i:i+1] or '*' == palavra[i:i+1] or '/' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q20()
-        elif '(' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q21()
-        elif ')' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q22()
-        elif ';' == palavra[i:i+1]: 
-            contador_coluna += 1
-            i += 1
-            return self.q23()
-        elif ',' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q24()
-        elif 'e' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q27()
-        elif 'f' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q38()
-        elif 'i' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q53()
-        elif 'l' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q64()
-        elif 'r' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q70()
-        elif 'v' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q74()
-        elif 's' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q86()
-        elif palavra[i:i+1].isalpha():
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif '\\' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q26()
-        else: 
-            contador_coluna += 1
-            i += 1
-            return self.q25(1)
-
-
-    def q1(self): # token *num*
-        global contador_coluna
-        global i
-        if palavra[i:i+1].isdigit():
-            contador_coluna += 1
-            i += 1
-            return self.q1()
-        elif '\\.' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q2()
-        elif 'e' == palavra[i:i+1] or 'E' == palavra[i:i+1]: 
-            contador_coluna += 1
-            i += 1
-            return self.q4()
-        elif palavra[i:i+1].isspace():
-            lista = lista() 
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('NUM', palavra[i:i+1])
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q2(self):  
-        global contador_coluna
-        global i
-        if palavra[i:i+1].isdigit():
-            
-            contador_coluna += 1
-            i += 1
-            return self.q3()
-        else: 
-            return self.q25(1)
-
-    def q3(self): # token *num*
-        global contador_coluna
-        global i
-        if palavra[i:i+1].isdigit():
-            
-            contador_coluna += 1
-            i += 1
-            return self.q3()
-        elif 'e' == palavra[i:i+1] or 'E' == palavra[i:i+1]: 
-            contador_coluna += 1
-            i += 1
-            return self.q4()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('NUM', palavra)
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q4(self):
-        global contador_coluna
-        global i
-        if palavra[i:i+1].isdigit():
-            contador_coluna += 1
-            i += 1
-            return self.q6()
-        elif '+' == palavra[i:i+1] or '-' == palavra[i:i+1]: 
-            contador_coluna += 1
-            i += 1
-            return self.q5()
-        else: 
-            return self.q25(1)
-
-    def q5(self): 
-        global contador_coluna
-        global i
-        if palavra[i:i+1].isdigit():
-            contador_coluna += 1
-            i += 1
-            return self.q6()
-        else: 
-            return self.q25(1)
-
-    def q6(self): # token *num*
-        global contador_coluna
-        global i
-        if palavra[i:i+1].isdigit():
-            contador_coluna += 1
-            i += 1
-            return self.q6()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('NUM', palavra)
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q7(self):
-        global i
-        global contador_coluna
-        if palavra[i:i+1] == '\\.':
-            
-            contador_coluna += 1
-            i += 1
-            return self.q7()
-        elif palavra[i:i+1] == '"':
-            
-            contador_coluna += 1
-            i += 1
-            return self.q8()
-        else: 
-            return self.q25(1)
-
-    def q8(self): # token *lit*
+        i += 1
         if palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('lit', palavra)
-            return lista.procura_na_lista(palavra[i:i+1])
+            if not self.l.procura_na_lista(palavra):
+                l.push('lit', palavra)
+            return self.l.procura_na_lista(palavra)
         else: 
-            return self.q25(2)
+            return self.q25(2, palavra, l)
 
-    def q9(self): #Abre { comentário
+    def q9(self, palavra, l): #Abre { comentário
         global i
         global contador_coluna
         while palavra[i:i+1]:
             contador_coluna += 1
             i += 1
             if palavra[i:i+1] == '}':
-                return self.q10()
-        return self.q25(1)
+                return self.q10(palavra, l)
+        return self.q25(1, palavra, l)
 
-    def q10(self): # fecha } comentário
+    def q10(self, palavra, l): # fecha } comentário
+        global i
+        contador_coluna += 1
         if palavra[i:i+1].isspace():
             return None
         else: 
+            i += 1
             return self.q25(3)
 
-    def q11(self): # reconhece *id*
+    def q11(self, palavra, l): # reconhece *id*
         global i
         global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            print("reconheci espaço")
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', palavra)
+            return self.l.procura_na_lista(palavra)        
+        i += 1
         if palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_':
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', palavra)
-            return lista.procura_na_lista(palavra[i:i+1])
+            return self.q11(palavra, l)
         else: 
-            return self.q25(1)
+            print("faiei aqui")
+            return self.q25(1, palavra, l)
 
-    def q12(self): # reconhece *EOF*
+    def q12(self, palavra, l): # reconhece *EOF*
+        global i
+        contador_coluna += 1
+        i += 1
         if palavra[i:i+1] == '$':
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('EOF', '$')
-            return lista.procura_na_lista(palavra[i:i+1])
+            if not self.l.procura_na_lista(palavra):
+                l.push('EOF', '$')
+            return self.l.procura_na_lista(palavra)
         else: 
-            return self.q25(1)
+            return self.q25(1, palavra, l)
 
-    def q13(self): # reconhece *<*
+    def q13(self, palavra, l): # reconhece *<*
         global i
         global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('OPR', '<')
+            return self.l.procura_na_lista(palavra)
+        i += 1
         if palavra[i:i+1] == '-':
-            contador_coluna += 1
-            i += 1
-            return self.q16()
+            return self.q16(palavra, l)
         elif palavra[i:i+1] == '=':
-            
-            contador_coluna += 1
-            i += 1
-            return self.q15()
+            return self.q15(palavra, l)
         elif palavra[i:i+1] == '>':
-            
-            contador_coluna += 1
-            i += 1
-            return self.q14()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('OPR', '<')
-            return lista.procura_na_lista(palavra[i:i+1])
+            return self.q14(palavra, l)
         else: 
-            return self.q25(1)
+            return self.q25(1, palavra, l)
 
-    def q14(self): # diferente <>
-        if palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('OPR', '<>')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q15(self):  # menor igual <=
-        if palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('OPR', '<=')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q16(self): # atribuicao <-
-        if palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('OPR', '<-')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q17(self): # =
+    def q14(self, palavra, l): # diferente <>
         global i
-        if palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('OPR', '=')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
+        contador_coluna += 1
 
-    def q18(self): # reconhece *>
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('OPR', '<>')
+            return self.l.procura_na_lista(palavra)
+        else: 
+            i += 1        
+            return self.q25(1, palavra, l)
+
+    def q15(self, palavra, l):  # menor igual <=
         global i
         global contador_coluna
+        contador_coluna += 1
+        i += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('OPR', '<=')
+            return self.l.procura_na_lista(palavra)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q16(self, palavra, l): # atribuicao <-
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('OPR', '<-')
+            return self.l.procura_na_lista(palavra)
+        else: 
+            i += 1
+            return self.q25(1, palavra, l)
+
+    def q17(self, palavra, l): # =
+        global i
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('OPR', '=')
+            return self.l.procura_na_lista(palavra)
+        else: 
+            i += 1
+            return self.q25(1, palavra, l)
+
+    def q18(self, palavra, l): # reconhece *>
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('OPR', '>')
+            return self.l.procura_na_lista(palavra)
+        i += 1
         if palavra[i:i+1] == '=':
-            contador_coluna += 1
+            return self.q19(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q19(self, palavra, l): # maior igual >=
+        global i
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('OPR', '>=')
+            return self.l.procura_na_lista(palavra)
+        else: 
             i += 1
-            return self.q19()
-        if palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('OPR', '>')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
+            return self.q25(1, palavra, l)
 
-    def q19(self): # maior igual >=
-        if palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('OPR', '>=')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q20(self): # operadores + - *  /
-        if palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('OPM', palavra)
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q21(self): # (
-        if palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('AB_P', '(')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q22(self): # )
-        if palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('FC_P', ')')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q23(self): # ;
-        if palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('PT_V', ';')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q24(self): # ,
-        if palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('VIR', ',')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q25(self, entrada): # erro
-        return self.erro(entrada)
-
-    def q26(self): # \t \s \n
-        if 'n' == palavra[i:i+1] or 's' == palavra[i:i+1] or 't' == palavra[i:i+1]:
-            return None
-        else: 
-            return self.q25(1)
-
-    def q27(self): 
+    def q20(self, palavra, l): # operadores + - *  /
         global i
         global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('OPM', palavra)
+            return self.l.procura_na_lista(palavra)
+        else: 
+            i += 1
+            return self.q25(1, palavra, l)
+
+    def q21(self, palavra, l): # (
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('AB_P', '(')
+            return self.l.procura_na_lista(palavra)
+        else: 
+            i += 1
+            return self.q25(1, palavra, l)
+
+    def q22(self, palavra, l): # )
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('FC_P', ')')
+            return self.l.procura_na_lista(palavra)
+        else: 
+            i += 1
+            return self.q25(1, palavra, l)
+
+    def q23(self, palavra, l): # ;
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('PT_V', ';')
+            return self.l.procura_na_lista(palavra)
+        else: 
+            i += 1
+            return self.q25(1, palavra, l)
+
+    def q24(self, palavra, l): # ,
+        global i
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('VIR', ',')
+            return self.l.procura_na_lista(palavra)
+        else: 
+            i += 1
+            return self.q25(1, palavra, l)
+
+    def q25(self, entrada, palavra, l): # erro
+        if not self.l.procura_na_lista(palavra):
+            l.push('ERRO'+str(entrada), palavra)
+        return self.l.procura_na_lista(palavra)
+
+    def q26(self, palavra, l): # \t \s \n
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i+1:i+2].isspace():
+            if 'n' == palavra[i:i+1] or 's' == palavra[i:i+1] or 't' == palavra[i:i+1]:
+                return None 
+        else: 
+            i += 1
+            return self.q25(1, palavra, l)
+
+    def q27(self, palavra, l): 
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'e')
+            return self.l.procura_na_lista(palavra)
+        i += 1
         if 'n' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q28()
+            return self.q28(palavra, l)
         elif 's' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q32()
+            return self.q32(palavra, l)
         elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_':
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'e')
-            return lista.procura_na_lista(palavra[i:i+1])
+            return self.q11(palavra, l)
         else: 
-            return self.q25(1)
+            return self.q25(1, palavra, l)
 
-    def q28(self):
+    def q28(self, palavra, l):
         global i
         global contador_coluna
-        if 't' == palavra[i:i+1]:
-            
-            contador_coluna += 1
-            i += 1
-            return self.q29()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'en')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q29(self):
-        global i
-        global contador_coluna
-        if 'a' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q30()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'ent')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q30(self):
-        global i
-        global contador_coluna
-        if 'o' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q31()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'enta')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q31(self): # reconhece entao
+        contador_coluna += 1
         if palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('entao', 'entao')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else:
-            return self.q25(1)
-
-    def q32(self):
-        global i
-        global contador_coluna
-        if 'c' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q33()
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'en')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 't' == palavra[i:i+1]:
+            return self.q29(palavra, l)
         elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'es')
-            return lista.procura_na_lista(palavra[i:i+1])
+            return self.q11(palavra, l)
         else: 
-            return self.q25(1)
+            return self.q25(1, palavra, l)
 
-    def q33(self):
+    def q29(self, palavra, l):
         global i
         global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'ent')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'a' == palavra[i:i+1]:
+            return self.q30(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q30(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'enta')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'o' == palavra[i:i+1]:
+            return self.q31(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q31(self, palavra, l): # reconhece entao
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('entao', 'entao')
+            return self.l.procura_na_lista(palavra)
+        else:
+            i += 1
+            return self.q25(1, palavra, l)
+
+    def q32(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'es')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'c' == palavra[i:i+1]:
+            return self.q33(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q33(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'esc')
+            return self.l.procura_na_lista(palavra)
+        i += 1
         if 'r' == palavra[i:i+1]:
-            
-            contador_coluna += 1
-            i += 1
-            return self.q34()
+            return self.q34(palavra, l)
         elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'esc')
-            return lista.procura_na_lista(palavra[i:i+1])
+            return self.q11(palavra, l)
         else: 
-            return self.q25(1)
+            return self.q25(1, palavra, l)
 
-    def q34(self):
+    def q34(self, palavra, l):
         global i
         global contador_coluna
-        if 'e' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q35()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'escr')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q35(self):
-        global i
-        global contador_coluna
-        if 'v' == palavra[i:i+1]: 
-            contador_coluna += 1
-            i += 1
-            return self.q36()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'escre')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q36(self):
-        global i
-        global contador_coluna
-        if 'a' == palavra[i:i+1]: 
-            contador_coluna += 1
-            i += 1
-            return self.q37()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'escrev')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q37(self): #reconhece escreva
-        lista = lista()
-        if not lista.procura_na_lista(palavra[i:i+1]):
-            lista.push('escreva', 'escreva')
-        return lista.procura_na_lista(palavra[i:i+1])    
-
-    def q38(self):
-        global i
-        global contador_coluna
-        if 'a' == palavra[i:i+1]: 
-            contador_coluna += 1
-            i += 1
-            return self.q39()
-        elif 'i' == palavra[i:i+1]:  
-            contador_coluna += 1
-            i += 1
-            return self.q45()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'f')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q39(self):
-        global i
-        global contador_coluna
-        if 'c' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q40()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'fa')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q40(self):
-        global i
-        global contador_coluna
-        if 'a' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q41()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'fac')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q41(self):
-        global i
-        global contador_coluna
-        if 'a' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q42()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'faca')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q42(self):
-        global contador_coluna
-        global i
-        if 't' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q43()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'facaa')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q43(self):
-        global i
-        global contador_coluna
-        if 'e' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q44()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'facaat')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q44(self): # reconhece *facaate*
-        lista = lista()
-        if not lista.procura_na_lista(palavra[i:i+1]):
-            lista.push('facaate', 'facaate')
-        return lista.procura_na_lista(palavra[i:i+1])   
-
-    def q45(self):
-        global i
-        global contador_coluna
-        if 'm' == palavra[i:i+1]:   
-            contador_coluna += 1
-            i += 1
-            return self.q46()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_':  
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'fi')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q46(self):
-        global i
-        global contador_coluna
-        if 'f' == palavra[i:i+1]: 
-            contador_coluna += 1
-            i += 1
-            return self.q47()
-        elif 's' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q51()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('fim', 'fim')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q47(self):
-        global i
-        global contador_coluna
-        if 'a' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q48()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'fimf')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q48(self):
-        global i
-        global contador_coluna
-        if 'c' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q49()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'fimfa')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q49(self):
-        global i
-        global contador_coluna
-        if 'a' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q50()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'fimfac')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q50(self): # reconhece *fimfaca*
-        global i
-        lista = lista()
-        if not lista.procura_na_lista(palavra[i:i+1]):
-            lista.push('fimfaca', 'fimfaca')
-        return lista.procura_na_lista(palavra[i:i+1])   
-
-    def q51(self):
-        global i
-        global contador_coluna
-        if 'e' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q51()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'fims')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q52(self):  # reconhece *fimse*
-        global i
-        lista = lista()
-        if not lista.procura_na_lista(palavra[i:i+1]):
-            lista.push('fimse', 'fimse')
-        return lista.procura_na_lista(palavra[i:i+1])  
-
-    def q53(self):
-        global i
-        global contador_coluna
-        if 'n' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q54()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'i')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q54(self):
-        global i
-        global contador_coluna
-        if 'i' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q55()
-        elif 't' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q59()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_':  
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'in')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q55(self):
-        global i
-        global contador_coluna
-        if 'c' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q56()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'ini')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q56(self):
-        global i
-        global contador_coluna
-        if 'i' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q57()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'inic')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q57(self):
-        global i
-        global contador_coluna
-        if 'o' == palavra[i:i+1]:    
-            contador_coluna += 1
-            i += 1
-            return self.q58()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_':  
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'inici')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q58(self):  # reconhece *inicio*
-        lista = lista()
-        if not lista.procura_na_lista(palavra[i:i+1]):
-            lista.push('inicio', 'inicio')
-        return lista.procura_na_lista(palavra[i:i+1])      
-
-    def q59(self):
-        global i
-        global contador_coluna
-        if 'e' == palavra[i:i+1]:  
-            contador_coluna += 1
-            i += 1
-            return self.q60()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_':   
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'int')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q60(self):
-        global i
-        global contador_coluna
-        if 'i' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q61()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_':  
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'inte')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q61(self):
-        global i
-        global contador_coluna
-        if 'r' == palavra[i:i+1]: 
-            contador_coluna += 1
-            i += 1
-            return self.q62()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'intei')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q62(self):
-        global i
-        global contador_coluna
-        if 'o' == palavra[i:i+1]: 
-            contador_coluna += 1
-            i += 1
-            return self.q62()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_':  
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'inteir')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q63(self):  # reconhece *inteiro*
-        global i
-        lista = lista()
-        if not lista.procura_na_lista(palavra[i:i+1]):
-            push('inteiro', 'inteiro')
-        return lista.procura_na_lista(palavra[i:i+1])      
-
-    def q64(self):
-        global i
-        global contador_coluna
-        if 'e' == palavra[i:i+1]:  
-            contador_coluna += 1
-            i += 1
-            return self.q65()
-        elif 'i' == palavra[i:i+1]:   
-            contador_coluna += 1
-            i += 1
-            return self.q68()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_':  
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'l')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q65(self):
-        global i
-        global contador_coluna
-        if 'i' == palavra[i:i+1]: 
-            contador_coluna += 1
-            i += 1
-            return self.q66()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'le')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q66(self):
-        global i
-        global contador_coluna
-        if 'a' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q67()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_':  
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'lei')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q67(self): # reconhece *leia*
-        global i
-        lista = lista()
-        if not lista.procura_na_lista(palavra[i:i+1]):
-            push('leia', 'leia')
-        return lista.procura_na_lista(palavra[i:i+1])  
-
-    def q68(self):
-        global i
-        global contador_coluna
-        if 't' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q69()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'li')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-
-    def q69(self): # reconhece *lit*
-        global i
-        lista = lista()
-        if not lista.procura_na_lista(palavra[i:i+1]):
-            push('lit', 'lit')
-        return lista.procura_na_lista(palavra[i:i+1])  
-
-    def q70(self):
-        global i
-        global contador_coluna
-        if 'e' == palavra[i:i+1]: 
-            contador_coluna += 1
-            i += 1
-            return self.q71()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'r')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q71(self):
-        global i
-        global contador_coluna
-        if 'a' == palavra[i:i+1]:    
-            contador_coluna += 1
-            i += 1
-            return self.q72()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 're')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q72(self):
-        global i
-        global contador_coluna
-        if 'l' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q73()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'rea')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q73(self): # reconhece *real*
-        global i
-        lista = lista()
-        if not lista.procura_na_lista(palavra[i:i+1]):
-            push('real', 'real')
-        return lista.procura_na_lista(palavra[i:i+1]) 
-
-    def q74(self):
-        global i
-        global contador_coluna
-        if 'a' == palavra[i:i+1]:  
-            contador_coluna += 1
-            i += 1
-            return self.q75()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_':   
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'v')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q75(self):
-        global i
-        global contador_coluna
-        if 'r' == palavra[i:i+1]: 
-            contador_coluna += 1
-            i += 1
-            return self.q76()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'va')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q76(self):
-        global i
-        global contador_coluna
-        if 'i' == palavra[i:i+1]: 
-            contador_coluna += 1
-            i += 1
-            return self.q77()
-        elif 'f' == palavra[i:i+1]:  
-            contador_coluna += 1
-            i += 1
-            return self.q83()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'var')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q77(self):
-        global i
-        global contador_coluna
-        if 'n' == palavra[i:i+1]:   
-            contador_coluna += 1
-            i += 1
-            return self.q78()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'vari')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q78(self):
-        global i
-        global contador_coluna
-        if 'i' == palavra[i:i+1]:  
-            contador_coluna += 1
-            i += 1
-            return self.q79()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_':  
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'varin')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q79(self):
-        global i
-        global contador_coluna
-        if 'c' == palavra[i:i+1]: 
-            contador_coluna += 1
-            i += 1
-            return self.q80()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'varini')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q80(self):
-        global i
-        global contador_coluna
-        if 'i' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q81()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'varinic')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q81(self):
-        global i
-        global contador_coluna
-        if 'o' == palavra[i:i+1]:
-            contador_coluna += 1
-            i += 1
-            return self.q82()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'varinici')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q82(self): # reconhece o estado *varinicio*
-        global i
-        lista = lista()
-        if not lista.procura_na_lista(palavra[i:i+1]):
-            lista.push('varinicio', 'varinicio')
-        return lista.procura_na_lista(palavra[i:i+1]) 
-
-    def q83(self):
-        global contador_coluna
-        if 'i' == palavra[i:i+1]:    
-            contador_coluna += 1
-            i += 1
-            return self.q84()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'varf')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q84(self):
-        global i
-        global contador_coluna
-        if 'm' == palavra[i:i+1]:    
-            contador_coluna += 1
-            i += 1
-            return self.q85()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 'varfi')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q85(): # reconhece o estado *varfim*
-        global i
-        lista = lista()
-        if not lista.procura_na_lista(palavra[i:i+1]):
-            lista.push('varfim', 'varfim')
-        return lista.procura_na_lista(palavra[i:i+1]) 
-
-    def q86(self):
-        global i
-        global contador_coluna
-        if 'e' == palavra[i:i+1]:  
-            contador_coluna += 1
-            i += 1
-            return self.q87()
-        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_':   
-            contador_coluna += 1
-            i += 1
-            return self.q11()
-        elif palavra[i:i+1].isspace():
-            lista = lista()
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('id', 's')
-            return lista.procura_na_lista(palavra[i:i+1])
-        else: 
-            return self.q25(1)
-
-    def q87(self): # reconhece o estado *se*
-        global i
-        lista = lista()
+        contador_coluna += 1
         if palavra[i:i+1].isspace():
-            if not lista.procura_na_lista(palavra[i:i+1]):
-                lista.push('se', 'se')
-            return lista.procura_na_lista(palavra[i:i+1]) 
-        else:
-            return self.q25(1)
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'escr')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'e' == palavra[i:i+1]:
+            return self.q35(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
 
-    def q88(self):
+    def q35(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'escre')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'v' == palavra[i:i+1]: 
+            return self.q36(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q36(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'escrev')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'a' == palavra[i:i+1]: 
+            return self.q37(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q37(self, palavra, l): #reconhece escreva
+        global contador_coluna
+        global i
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('escreva', 'escreva')
+            return self.l.procura_na_lista(palavra) 
+        else:
+            i += 1
+            return self.q25(1, palavra, l)   
+
+    def q38(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'f')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'a' == palavra[i:i+1]: 
+            return self.q39(palavra, l)
+        elif 'i' == palavra[i:i+1]:  
+            return self.q45(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q39(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'fa')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'c' == palavra[i:i+1]:
+            return self.q40(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q40(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'fac')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'a' == palavra[i:i+1]:
+            return self.q41(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q41(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'faca')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'a' == palavra[i:i+1]:
+            return self.q42(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q42(self, palavra, l):
+        global contador_coluna
+        global i
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'facaa')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 't' == palavra[i:i+1]:
+            return self.q43(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q43(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'facaat')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'e' == palavra[i:i+1]:
+            return self.q44(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q44(self, palavra, l): # reconhece *facaate
+        global contador_coluna
+        global i
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('facaate', 'facaate')
+            return self.l.procura_na_lista(palavra) 
+        else:
+            i += 1
+            return self.q25(1, palavra, l)    
+
+    def q45(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'fi')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'm' == palavra[i:i+1]:   
+            return self.q46(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_':
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q46(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('fim', 'fim')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'f' == palavra[i:i+1]: 
+            return self.q47(palavra, l)
+        elif 's' == palavra[i:i+1]:
+            return self.q51(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q47(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'fimf')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'a' == palavra[i:i+1]:
+            return self.q48(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q48(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'fimfa')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'c' == palavra[i:i+1]:
+            return self.q49(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q49(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'fimfac')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'a' == palavra[i:i+1]:
+            return self.q50(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q50(self, palavra, l): # reconhece *fimfaca*
+        global contador_coluna
+        global i
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('fimfaca', 'fimfaca')
+            return self.l.procura_na_lista(palavra) 
+        else:
+            i += 1
+            return self.q25(1, palavra, l)    
+
+    def q51(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'fims')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'e' == palavra[i:i+1]:
+            return self.q52(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q52(self, palavra, l):  # reconhece *fimse*
+        global contador_coluna
+        global i
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('fimse', 'fimse')
+            return self.l.procura_na_lista(palavra) 
+        else:
+            i += 1
+            return self.q25(1, palavra, l)    
+
+    def q53(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'i')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'n' == palavra[i:i+1]:
+            return self.q54(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q54(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'in')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'i' == palavra[i:i+1]:
+            return self.q55(palavra, l)
+        elif 't' == palavra[i:i+1]:
+            return self.q59(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q55(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'ini')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'c' == palavra[i:i+1]:
+            return self.q56(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q56(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'inic')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'i' == palavra[i:i+1]:
+            return self.q57(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_':
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q57(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'inici')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'o' == palavra[i:i+1]:    
+            return self.q58(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_':  
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q58(self, palavra, l):  # reconhece *inicio*
+        global contador_coluna
+        contador_coluna += 1
+        if not self.l.procura_na_lista(palavra):
+            l.push('inicio', 'inicio')
+        return self.l.procura_na_lista(palavra)      
+
+    def q59(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'int')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'e' == palavra[i:i+1]:  
+            return self.q60(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q60(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'inte')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'i' == palavra[i:i+1]:
+            return self.q61(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_':  
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q61(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'intei')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'r' == palavra[i:i+1]: 
+            return self.q62(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q62(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'inteir')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'o' == palavra[i:i+1]: 
+            return self.q63(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_':  
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q63(self, palavra, l):  # reconhece *inteiro*
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if not self.l.procura_na_lista(palavra):
+            l.push('inteiro', 'inteiro')
+        return self.l.procura_na_lista(palavra)      
+
+    def q64(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'l')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'e' == palavra[i:i+1]:  
+            return self.q65(palavra, l)
+        elif 'i' == palavra[i:i+1]:   
+            return self.q68(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q65(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'le')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'i' == palavra[i:i+1]: 
+            return self.q66(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q66(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'lei')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'a' == palavra[i:i+1]:
+            return self.q67(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_':  
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q67(self, palavra, l): # reconhece *leia*
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if not self.l.procura_na_lista(palavra):
+            l.push('leia', 'leia')
+        return self.l.procura_na_lista(palavra)  
+
+    def q68(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'li')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 't' == palavra[i:i+1]:
+            return self.q69(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_':
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+
+    def q69(self, palavra, l): # reconhece *lit*
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if not self.l.procura_na_lista(palavra):
+            l.push('lit', 'lit')
+        return self.l.procura_na_lista(palavra)  
+
+    def q70(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'r')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'e' == palavra[i:i+1]: 
+            return self.q71(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q71(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 're')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'a' == palavra[i:i+1]:    
+            return self.q72(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_':
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q72(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'rea')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'l' == palavra[i:i+1]:
+            return self.q73(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q73(self, palavra, l): # reconhece *real*
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if not self.l.procura_na_lista(palavra):
+            l.push('real', 'real')
+        return self.l.procura_na_lista(palavra) 
+
+    def q74(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'v')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'a' == palavra[i:i+1]:  
+            return self.q75(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q75(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'va')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'r' == palavra[i:i+1]: 
+            return self.q76(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q76(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'var')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'i' == palavra[i:i+1]: 
+            return self.q77(palavra, l)
+        elif 'f' == palavra[i:i+1]:  
+            return self.q83(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q77(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'vari')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'n' == palavra[i:i+1]:   
+            return self.q78(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q78(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'varin')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'i' == palavra[i:i+1]:  
+            return self.q79(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_':  
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q79(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'varini')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'c' == palavra[i:i+1]: 
+            return self.q80(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q80(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'varinic')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'i' == palavra[i:i+1]:
+            return self.q81(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q81(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'varinici')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'o' == palavra[i:i+1]:
+            return self.q82(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q82(self, palavra, l): # reconhece o estado *varinicio*
+        global contador_coluna
+        contador_coluna += 1
+        if not self.l.procura_na_lista(palavra):
+            l.push('varinicio', 'varinicio')
+        return self.l.procura_na_lista(palavra) 
+
+    def q83(self, palavra, l):
+        global contador_coluna
+        global i
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'varf')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'i' == palavra[i:i+1]:    
+            return self.q84(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q84(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace():
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 'varfi')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'm' == palavra[i:i+1]:   
+            return self.q85(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q85(self, palavra, l): # reconhece o estado *varfim*
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if not self.l.procura_na_lista(palavra):
+            l.push('varfim', 'varfim')
+        return self.l.procura_na_lista(palavra) 
+
+    def q86(self, palavra, l):
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace(): 
+            if not self.l.procura_na_lista(palavra):
+                l.push('id', 's')
+            return self.l.procura_na_lista(palavra)
+        i += 1
+        if 'e' == palavra[i:i+1]:  
+            return self.q87(palavra, l)
+        elif palavra[i:i+1].isdigit() or palavra[i:i+1].isalpha() or palavra[i:i+1] == '_': 
+            return self.q11(palavra, l)
+        else: 
+            return self.q25(1, palavra, l)
+
+    def q87(self, palavra, l): # reconhece o estado *se*
+        global i
+        global contador_coluna
+        contador_coluna += 1
+        if palavra[i:i+1].isspace(): 
+            if not self.l.procura_na_lista(palavra):
+                l.push('se', 'se')
+            return self.l.procura_na_lista(palavra) 
+        else:
+            return self.q25(1, palavra, l)
+
+    def q88(self, palavra, l):
         global i
         if palavra[i:i+1].isspace():
             return None
         else:
-            return self.q25(1)
+            return self.q25(1, palavra, l)
 
     def erro(self, cod):
         if(cod==2):
-            print("Erro " + str(cod) + ". Aspas vêm ao final de constantes literais. Linha " + str(contador_linha) + ", coluna " + str(contador_coluna) + ".\n")
+            print("Erro " + str(cod) + ". Aspas vêm ao final de constantes literais. Linha " + str(contador_linha) + ", coluna " + str(contador_coluna) + ".")
         elif(cod==3):
-            print("Erro " + str(cod) + ". Chaves devem fechar comentários. Linha " + str(contador_linha) + ", coluna " + str(contador_coluna) + ".\n")
+            print("Erro " + str(cod) + ". Chaves devem fechar comentários. Linha " + str(contador_linha) + ", coluna " + str(contador_coluna) + ".")
         else:
-            print("Erro " + str(cod) + ". caractere inválido, linha " + str(contador_linha) + ", coluna " + str(contador_coluna) + ".\n")
+            print("Erro " + str(cod) + ". caractere inválido, linha " + str(contador_linha) + ", coluna " + str(contador_coluna) + ".")
 
 def main():
         if not os.path.exists('fonte.txt'):
@@ -1492,7 +1343,7 @@ def main():
             fonte.write("$")
 
             l = lista()
-            ana = analisador()
+            ana = analisador(l)
             retorno_scanner = token()
 
             l.push('inicio', 'inicio')
@@ -1514,16 +1365,21 @@ def main():
             global contador_coluna
             contador_linha = 0
 
+            print('\n')
             for line in fonte:
                 contador_linha += 1
                 contador_coluna = 0
+                while (line[contador_coluna] == " "):
+                    contador_coluna += 1
                 for word in line.split():
                     palavra = word
-                    retorno_scanner = ana.scanner()
-                    if(retorno_scanner == "Erro*"):
-                        ana.erro(int(retorno_scanner[5:6]))     
-                    else:
-                        print("Classe: " + retorno_scanner.classe + ", lexema: " + retorno_scanner.lexema + ", tipo: " + retorno_scanner.tipo + ".\n")
+                    retorno_scanner = ana.scanner(palavra, l) 
+                    if retorno_scanner != None:
+                        if retorno_scanner.classe == "ERRO*":
+                            print("Classe: " + retorno_scanner.classe + ", lexema: " + retorno_scanner.lexema + ", tipo: " + retorno_scanner.tipo + ".")
+                            ana.erro(int(retorno_scanner[5:6]))     
+                        else:
+                            print("Classe: " + retorno_scanner.classe + ", lexema: " + retorno_scanner.lexema + ", tipo: " + retorno_scanner.tipo + ".")
 
 if __name__ == '__main__':
     main()
