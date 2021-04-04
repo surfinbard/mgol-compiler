@@ -107,7 +107,7 @@ class analisador:
         if palavra[i:i+1]:
             if palavra[i:i+1].isdigit():
                 return self.q1(palavra, l)
-            elif '\.' == palavra[i:i+1]:
+            elif '.' == palavra[i:i+1]:
                 return self.q2(palavra, l)
             elif 'e' == palavra[i:i+1] or 'E' == palavra[i:i+1]: 
                 return self.q4(palavra, l)
@@ -1514,6 +1514,7 @@ def main():
             global contador_linha 
             global contador_coluna
             contador_linha = 0
+            indice = 0
 
             print('\n')
             for line in fonte:
@@ -1522,12 +1523,12 @@ def main():
                 while (line[contador_coluna] == " "):
                     contador_coluna += 1
 
+                literal_comecou = False
                 char_index = 0
                 aspas_linha = 0
-                comecou_literal = False
-                terminou_literal = False
                 posicao_aspas = []   
                 comentario_com_espacos = []
+                tupla = ()
 
                 for item in line:
                     if item == '"':
@@ -1535,9 +1536,10 @@ def main():
                         aspas_linha += 1    
                     char_index += 1
 
-                for word in line.split():
+                linha = line.split()
+
+                for word in linha:
                     palavra = word
-                    linha = line.split()
 
                     if aspas_linha == 0:
                         ana.excecoes(palavra)
@@ -1550,29 +1552,30 @@ def main():
                             break          
                         else:
 
-                            while len(posicao_aspas) != 0:
-                                
-                                if palavra[0] == '"' and palavra[-1] != '"':
+                            def inicio_comentario(palavra):
+                                comentario_com_espacos.append(palavra)
+
+                            def palavra_sem_aspas(palavra):
+                                print("cheguei")
+                                if literal_comecou == True:
                                     comentario_com_espacos.append(palavra)
-                                    palavra = linha[linha.index(palavra)+1]
-                                    comecou_literal = True
-                                elif palavra[-1] == '"':
-                                    comentario_com_espacos.append(palavra)
-                                    palavra = linha[linha.index(palavra)+1]
-                                    palavra = " ".join(comentario_com_espacos)
-                                    ana.excecoes(palavra)
-                                    terminou_literal = True
-                                    comecou_literal = False
+                                    print(comentario_com_espacos)
                                 else:
-                                    if not comecou_literal or terminou_literal:
-                                        ana.excecoes(palavra)
-                                    else:
-                                        comentario_com_espacos.append(palavra)
-                                        palavra = linha[linha.index(palavra)+1]
+                                    ana.excecoes(palavra)
 
-                                posicao_aspas.pop(0)
-                                posicao_aspas.pop(0)
-                            
+                            def fim_comentario(palavra):
+                                literal_comecou = False
+                                comentario_com_espacos.append(palavra)
 
+                            if palavra[0] == '"' and palavra[-1] != '"':
+                                literal_comecou = True
+                                inicio_comentario(palavra)
+                            elif palavra[0] != '"' and palavra[-1] == '"':
+                                fim_comentario(palavra)
+                            else:
+                                if palavra[0] != '"' and palavra[-1] != '"':
+                                    palavra_sem_aspas(palavra)
+                            print(literal_comecou)
+                            print(comentario_com_espacos)
 if __name__ == '__main__':
     main()
