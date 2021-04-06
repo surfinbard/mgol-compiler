@@ -3,6 +3,9 @@ import re
 
 i = 0
 contador_coluna = 0
+aspas_palavra = 0
+aspas_lidas = 0
+flag_literal = 0
 palavra = ""
 palavra_anterior = ""
 palavra_inicio = ""
@@ -11,9 +14,14 @@ palavra_meio = ""
 caractere_meio = ""
 palavra_fim = ""
 caractere_fim = ""
+pre_aspas = ""
+pos_aspas = ""
+entre_aspas = ""
 caracteres_especiais = False
 caractere_no_comeco = False
 caractere_no_fim = False
+literal_comecou = False
+flag_break = False
 
 class lista:
     def __init__(self):
@@ -1521,7 +1529,7 @@ class analisador:
                 print("Classe: " + retorno_scanner.classe + ", lexema: " + retorno_scanner.lexema + ", tipo: " + retorno_scanner.tipo + ".")
 
 
-    def trata_lexemas(self, palavra, tabela_simbolos, l, ana, caractere):
+    def trata_lexemas(self, palavra, tabela_simbolos, l, ana):
 
         global caractere_no_comeco
         global caractere_no_fim
@@ -1533,6 +1541,12 @@ class analisador:
         global palavra_inicio
         global palavra_meio
         global palavra_fim
+        global pre_aspas
+        global pos_aspas
+        global entre_aspas
+        global literal_comecou
+        global flag_literal
+        lista_especiais = [';', '=',  ',',  '(',  ')',  '+',  '-',  '*',  '/',  '>',  '<']
 
         if caracteres_especiais == False:
             retorno_scanner = ana.scanner(palavra, l, tabela_simbolos)
@@ -1547,16 +1561,30 @@ class analisador:
                 self.processa_lexemas(palavra_meio, l, tabela_simbolos, retorno_scanner, ana)
             elif caractere_no_comeco == True: 
                 retorno_scanner = ana.scanner(caractere_inicio, l, tabela_simbolos)
-                self.processa_lexemas(caractere_inicio, l, tabela_simbolos, retorno_scanner, ana)   
-                retorno_scanner = ana.scanner(palavra_inicio, l, tabela_simbolos) 
-                self.processa_lexemas(palavra_inicio, l, tabela_simbolos, retorno_scanner, ana)         
+                self.processa_lexemas(caractere_inicio, l, tabela_simbolos, retorno_scanner, ana)
+                if not any(elemento in palavra_inicio for elemento in lista_especiais):
+                    retorno_scanner = ana.scanner(palavra_inicio, l, tabela_simbolos) 
+                    self.processa_lexemas(palavra_inicio, l, tabela_simbolos, retorno_scanner, ana) 
+                else:
+                    flag_break = True
+                    ana.separa_lexemas(palavra_inicio, tabela_simbolos, l, ana, flag_literal)
+
             elif caractere_no_fim == True: 
                 retorno_scanner = ana.scanner(palavra_fim, l, tabela_simbolos) 
                 self.processa_lexemas(palavra_fim, l, tabela_simbolos, retorno_scanner, ana)
                 retorno_scanner = ana.scanner(caractere_fim, l, tabela_simbolos)
                 self.processa_lexemas(caractere_fim, l, tabela_simbolos, retorno_scanner, ana)   
+            else:
+                if pre_aspas != "":
+                    retorno_scanner = ana.scanner(pre_aspas, l, tabela_simbolos) 
+                    self.processa_lexemas(pre_aspas, l, tabela_simbolos, retorno_scanner, ana)
+                retorno_scanner = ana.scanner(entre_aspas, l, tabela_simbolos)
+                self.processa_lexemas(entre_aspas, l, tabela_simbolos, retorno_scanner, ana)  
+                if pos_aspas != "":
+                    retorno_scanner = ana.scanner(pos_aspas, l, tabela_simbolos) 
+                    self.processa_lexemas(pos_aspas, l, tabela_simbolos, retorno_scanner, ana)
 
-    def separa_lexemas(self, palavra, tabela_simbolos, l, ana, word):
+    def separa_lexemas(self, palavra, tabela_simbolos, l, ana, flag_literal):
 
         global caractere_no_comeco
         global caractere_no_fim
@@ -1568,72 +1596,134 @@ class analisador:
         global palavra_inicio
         global palavra_meio
         global palavra_fim
+        global aspas_palavra
+        global pre_aspas
+        global posaspas
+        global entre_aspas
+        lista_especiais = [';', '=',  ',',  '(',  ')',  '+',  '-',  '*',  '/',  '>',  '<']
+        lista_especiais_duplos = ['<-', '<=', '<>', '>=']
         index = 0
+        flag_literal = 0
+        contador_especiais = 0
 
+        if any(element in palavra for element in lista_especiais_duplos):
+            contador_especiais += 1
+       
+        for item in palavra:
+            index += 1
+            if (item in lista_especiais and not ((item == '<' and palavra[index] == '-')
+                                              or (item == '<' and palavra[index] == '=')
+                                              or (item == '<' and palavra[index] == '>')
+                                              or (item == '>' and palavra[index] == '='))):
+                contador_especiais += 1
+            
+        index = 0
         #separa lexemas colados quando aplicável    
-        for posicao, caractere in enumerate(word):
+        for posicao, caractere in enumerate(palavra):
             caractere_no_comeco = False
             caractere_no_fim = False
             caracteres_especiais = False
             #usaremos index para acessar indices seguintes
             index += 1
 
-            #especiais de um caractere só
-            if (caractere == ";" or caractere == "=" or caractere == "," or caractere == "(" or caractere == ")"
-            or caractere == "+" or caractere == "-" or caractere == "*" or caractere == "/" or 
-            (caractere == '<' and word[index] != '-' and word[index] != '=' and word[index] != '>') or 
-            ((caractere == '>' and word[index] != '='))):
+         #especiais de um caractere só
+            if contador_especiais > 0:
 
-                caracteres_especiais = True
+                #"\N TA AQUI"
                 
-                if palavra[0] == caractere:
-                    caractere_inicio = palavra[0]
-                    palavra_inicio = palavra[1:]
-                    caractere_no_comeco = True
-                    palavra_anterior = ""
-                    ana.trata_lexemas(palavra, tabela_simbolos, l, ana, caractere)
-                elif len(word) < index:
-                    for caractere in palavra:
-                        if word[posicao] == caractere:
-                            palavra_anterior = palavra[0:posicao]
-                            caractere_meio = word[posicao]
-                            palavra_meio = word[posicao+1:] 
-                            ana.trata_lexemas(palavra, tabela_simbolos, l, ana, caractere)
-                elif palavra[-1] == caractere: 
-                    caractere_fim = palavra[-1]
-                    palavra_fim = palavra[:-1]
-                    caractere_no_fim = True
-                    palavra_anterior = ""
-                    ana.trata_lexemas(palavra, tabela_simbolos, l, ana, caractere)
+                if (caractere == ";" or caractere == "=" or caractere == "," or caractere == "(" or caractere == ")"
+                or caractere == "+" or caractere == "-" or caractere == "*" or caractere == "/" or 
+                (caractere == '<' and palavra[index] != '-' and palavra[index] != '=' and palavra[index] != '>') or 
+                (caractere == '>' and palavra[index] != '=')):
 
-            elif ((caractere == '<' and word[index] == '-')
-            or (caractere == '<' and word[index] == '=')
-            or (caractere == '<' and word[index] == '>')
-            or (caractere == '>' and word[index] == '=')):
-                                
-                caracteres_especiais = True 
+                    caracteres_especiais = True
+                    contador_especiais -= 1
+                    
+                    if palavra[0] == caractere:
+                        if flag_break == True:
+                            break
+                        caractere_inicio = palavra[0]
+                        palavra_inicio = palavra[1:]
+                        caractere_no_comeco = True
+                        palavra_anterior = ""
+                        ana.trata_lexemas(palavra, tabela_simbolos, l, ana)
+                    elif len(palavra) > index:
+                        if flag_break == True:
+                            break
+                        for caractere in palavra:
+                            if palavra[posicao] == caractere:
+                                palavra_anterior = palavra[0:posicao]
+                                caractere_meio = palavra[posicao]
+                                palavra_meio = palavra[posicao+1:] 
+                                ana.trata_lexemas(palavra, tabela_simbolos, l, ana)
+                    elif palavra[-1] == caractere: 
+                        caractere_fim = palavra[-1]
+                        palavra_fim = palavra[:-2]
+                        caractere_no_fim = True
+                        palavra_anterior = ""
+                        ana.trata_lexemas(palavra, tabela_simbolos, l, ana)
 
-                if palavra[0] == caractere:
-                    caractere_inicio = palavra[0:2]
-                    palavra_inicio = palavra[3:]
-                    caractere_no_comeco = True
-                    ana.trata_lexemas(palavra, tabela_simbolos, l, ana, caractere)
-                elif len(word) < index:
-                    for caractere in palavra:
-                        if word[posicao] == caractere:
-                            palavra_anterior = palavra[:posicao]
-                            caractere_meio = palavra[posicao:posicao+2]
-                            palavra_meio = palavra[posicao+2:] 
-                            ana.trata_lexemas(palavra, tabela_simbolos, l, ana, caractere)
-                elif palavra[-2] == caractere:
-                    caractere_fim = palavra[-2:]
-                    palavra_fim = palavra[:-2]
-                    caractere_no_fim = True 
-                    ana.trata_lexemas(palavra, tabela_simbolos, l, ana, caractere)
+                    contador_especiais -= 1
+
+                elif ((caractere == '<' and palavra[index] == '-')
+                or (caractere == '<' and palavra[index] == '=')
+                or (caractere == '<' and palavra[index] == '>')
+                or (caractere == '>' and palavra[index] == '=')):
+                                    
+                    caracteres_especiais = True 
+
+                    if palavra[0] == caractere:
+                        if flag_break == True:
+                            break
+                        caractere_inicio = palavra[0:2]
+                        palavra_inicio = palavra[3:]
+                        caractere_no_comeco = True
+                        ana.trata_lexemas(palavra, tabela_simbolos, l, ana)
+                    elif len(palavra) > index:
+                        if flag_break == True:
+                            break
+                        for caractere in palavra:
+                            if palavra[posicao] == caractere:
+                                palavra_anterior = palavra[:posicao]
+                                caractere_meio = palavra[posicao:posicao+2]
+                                palavra_meio = palavra[posicao+2:] 
+                                ana.trata_lexemas(palavra, tabela_simbolos, l, ana)
+                    elif palavra[-2] == caractere:
+                        caractere_fim = palavra[-2:]
+                        palavra_fim = palavra[:-2]
+                        caractere_no_fim = True 
+                        ana.trata_lexemas(palavra, tabela_simbolos, l, ana)
+
+                    contador_especiais -= 1
+
+            else:
+                if caractere == '"':
+                    if palavra[0] == caractere and palavra[-1] == caractere:
+                        caracteres_especiais = True
+                        entre_aspas = palavra[:]
+                        palavra_anterior = ""
+                        flag_literal = 1
+                        ana.trata_lexemas(palavra, tabela_simbolos, l, ana)
+                    elif  aspas_lidas %2 == 0: #inicio do literal
+                        caracteres_especiais = True
+                        if palavra[0] != caractere:
+                            pre_aspas = palavra[:index-1]
+                        entre_aspas = palavra[index-1:]
+                        palavra_anterior = ""
+                        flag_literal = 0
+                    elif aspas_lidas %2 != 0: #fim literal
+                        caracteres_especiais = True
+                        entre_aspas = entre_aspas[:index]
+                        if palavra[-1] != caractere:
+                            pos_aspas = palavra[index:]
+                        palavra_anterior = ""
+                        flag_literal = 1
+                        ana.trata_lexemas(palavra, tabela_simbolos, l, ana)
 
         #fim da separação
+
         if caracteres_especiais == False:
-            ana.trata_lexemas(palavra, tabela_simbolos, l, ana, None)
+            ana.trata_lexemas(palavra, tabela_simbolos, l, ana)
 
 def main():
         if not os.path.exists('fonte.txt'):
@@ -1664,6 +1754,9 @@ def main():
 
             global contador_linha 
             global contador_coluna
+            global aspas_palavra
+            global aspas_lidas
+            global flag_literal
             contador_linha = 0
             indice = 0
 
@@ -1674,10 +1767,12 @@ def main():
                 while (line[contador_coluna] == " "):
                     contador_coluna += 1
 
+                global literal_comecou
                 literal_comecou = False
                 comentario_comecou = False
                 char_index = 0
                 aspas_linha = 0
+                aspas_lidas = 0
                 chaves_abertura = 0
                 chaves_fechameto = 0
                 posicao_aspas = []
@@ -1707,7 +1802,7 @@ def main():
 
                     if aspas_linha == 0 and chaves_abertura == 0 and chaves_fechameto == 0:
 
-                        ana.separa_lexemas(palavra, tabela_simbolos, l, ana, word)
+                        ana.separa_lexemas(palavra, tabela_simbolos, l, ana, flag_literal)
 
                     #tratamento de casos com aspas ou chaves a seguir. pode haver so aspas, so chaves ou os dois
                     #caso haja aspas/chaves, é preciso verificar se o número é par.
@@ -1729,25 +1824,31 @@ def main():
                                 if literal_comecou == True:
                                     literal_com_espacos.append(palavra)
                                 else:
-                                    ana.separa_lexemas(palavra, tabela_simbolos, l, ana, word)
+                                    ana.separa_lexemas(palavra, tabela_simbolos, l, ana, flag_literal)
 
                             def fim_literal(palavra):
                                 literal_com_espacos.append(palavra)
                                 tupla = tuple(literal_com_espacos)
                                 palavra = " ".join(tupla)
-                                ana.separa_lexemas(palavra, tabela_simbolos, l, ana, word)
+                                ana.separa_lexemas(palavra, tabela_simbolos, l, ana, flag_literal)
 
-                            if palavra[0] == '"' and palavra[-1] == '"':
-                                ana.separa_lexemas(palavra, tabela_simbolos, l, ana, word)
-                            elif palavra[0] == '"' and palavra[-1] != '"':
+                            aspas_palavra = 0
+                            for item in palavra:
+                                if item == '"':
+                                    aspas_palavra += 1
+                            
+                            if aspas_palavra == 0:
+                                palavra_sem_aspas(palavra)
+                            elif aspas_palavra %2 == 0: #um ou mais lit dentro da palavra
+                                ana.separa_lexemas(palavra, tabela_simbolos, l, ana, flag_literal)
+                            elif aspas_palavra == 1 and aspas_lidas %2 == 0: #inicio de literal (lemos numero par  de aspas ate aqui)
                                 literal_comecou = True
                                 inicio_literal(palavra)
-                            elif palavra[0] != '"' and palavra[-1] == '"':
+                                aspas_lidas += 1
+                            elif aspas_palavra == 1 and aspas_lidas %2 != 0: #fim de literal (lemos numero impar de aspas ate aqui)
                                 fim_literal(palavra)
+                                aspas_lidas += 1                                
                                 literal_comecou = False
-                            else:
-                                if palavra[0] != '"' and palavra[-1] != '"':
-                                    palavra_sem_aspas(palavra)
 
                     elif aspas_linha == 0 and (chaves_abertura != 0 or chaves_fechameto != 0):
 
@@ -1765,16 +1866,16 @@ def main():
                                 if comentario_comecou == True:
                                     comentario_com_espacos.append(palavra)
                                 else:
-                                    ana.separa_lexemas(palavra, tabela_simbolos, l, ana, word)
+                                    ana.separa_lexemas(palavra, tabela_simbolos, l, ana, flag_literal)
 
                             def fim_comentario(palavra):
                                 comentario_com_espacos.append(palavra)
                                 tupla = tuple(comentario_com_espacos)
                                 palavra = " ".join(tupla)
-                                ana.separa_lexemas(palavra, tabela_simbolos, l, ana, word)
+                                ana.separa_lexemas(palavra, tabela_simbolos, l, ana, flag_literal)
 
                             if palavra[0] == '{' and palavra[-1] == '}':
-                                ana.separa_lexemas(palavra, tabela_simbolos, l, ana, word)
+                                ana.separa_lexemas(palavra, tabela_simbolos, l, ana, flag_literal)
                             elif palavra[0] == '{' and palavra[-1] != '}':
                                 comentario_comecou = True
                                 inicio_comentario(palavra)
@@ -1784,6 +1885,21 @@ def main():
                             else:
                                 if palavra[0] != '{' and palavra[-1] != '}':
                                     palavra_sem_chaves(palavra)
+
+                                    
+                            if aspas_palavra == 0:
+                                palavra_sem_aspas(palavra)
+                            elif aspas_palavra %2 == 0: #um ou mais lit dentro da palavra
+                                aspas_lidas += 2
+                                ana.separa_lexemas(palavra, tabela_simbolos, l, ana, flag_literal)
+                            elif aspas_palavra == 1 and aspas_lidas %2 == 0: #inicio de literal (lemos numero par  de aspas ate aqui)
+                                literal_comecou = True
+                                aspas_lidas += 1
+                                inicio_literal(palavra)
+                            elif aspas_palavra == 1 and aspas_lidas %2 != 0: #fim de literal (lemos numero impar de aspas ate aqui)
+                                aspas_lidas += 1
+                                fim_literal(palavra)
+                                literal_comecou = False
                     else:
 
                         if(aspas_linha%2!=0):
@@ -1806,7 +1922,7 @@ def main():
                             literal_com_espacos.append(palavra)
                             tupla = tuple(literal_com_espacos)
                             palavra = " ".join(tupla)
-                            ana.separa_lexemas(palavra, tabela_simbolos, l, ana, word)
+                            ana.separa_lexemas(palavra, tabela_simbolos, l, ana, flag_literal)
 
                         def palavra_solta(palavra):
                             if literal_comecou == True:
@@ -1814,7 +1930,7 @@ def main():
                             elif comentario_comecou == True:
                                 comentario_com_espacos.append(palavra)
                             else:
-                                ana.separa_lexemas(palavra, tabela_simbolos, l, ana, word)
+                                ana.separa_lexemas(palavra, tabela_simbolos, l, ana, flag_literal)
                         
                         def inicio_comentario(palavra):
                             comentario_com_espacos.append(palavra)
@@ -1823,12 +1939,12 @@ def main():
                             comentario_com_espacos.append(palavra)
                             tupla = tuple(comentario_com_espacos)
                             palavra = " ".join(tupla)
-                            ana.separa_lexemas(palavra, tabela_simbolos, l, ana, word)
+                            ana.separa_lexemas(palavra, tabela_simbolos, l, ana, flag_literal)
 
                         if palavra[0] == '{' and palavra[-1] == '}':
-                            ana.separa_lexemas(palavra, tabela_simbolos, l, ana, word)
+                            ana.separa_lexemas(palavra, tabela_simbolos, l, ana, flag_literal)
                         elif palavra[0] == '"' and palavra[-1] == '"':
-                            ana.separa_lexemas(palavra, tabela_simbolos, l, ana, word)
+                            ana.separa_lexemas(palavra, tabela_simbolos, l, ana, flag_literal)
                         elif palavra[0] == '{' and palavra[-1] != '"':
                             comentario_comecou = True
                             inicio_comentario(palavra)
