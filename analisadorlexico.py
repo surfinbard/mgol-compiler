@@ -21,7 +21,7 @@ caracteres_especiais = False
 caractere_no_comeco = False
 caractere_no_fim = False
 literal_comecou = False
-flag_break = False
+flag = False
 
 class lista:
     def __init__(self):
@@ -257,6 +257,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', palavra)
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', palavra)
             return self.l.procura_na_lista(palavra) 
 
@@ -461,6 +462,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'e')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'e')
             return self.l.procura_na_lista(palavra)
 
@@ -479,6 +481,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'en')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'en')
             return self.l.procura_na_lista(palavra)
 
@@ -497,6 +500,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'ent')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'ent')
             return self.l.procura_na_lista(palavra)
 
@@ -515,6 +519,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'enta')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'enta')
             return self.l.procura_na_lista(palavra)
 
@@ -548,6 +553,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'es')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'es')
             return self.l.procura_na_lista(palavra)
 
@@ -566,6 +572,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'esc')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'esc')
             return self.l.procura_na_lista(palavra)
 
@@ -584,6 +591,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'escr')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'escr')
             return self.l.procura_na_lista(palavra)
 
@@ -602,6 +610,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'escre')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'escre')
             return self.l.procura_na_lista(palavra)
 
@@ -620,6 +629,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'escrev')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'escrev')
             return self.l.procura_na_lista(palavra)
 
@@ -655,6 +665,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'f')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'f')
             return self.l.procura_na_lista(palavra)
 
@@ -673,6 +684,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'fa')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'fa')
             return self.l.procura_na_lista(palavra)
 
@@ -691,6 +703,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'fac')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'fac')
             return self.l.procura_na_lista(palavra)
 
@@ -709,6 +722,8 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'faca')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
+                tabela_simbolos.push('id', 'faca')
             return self.l.procura_na_lista(palavra)
 
     def q42(self, palavra, l, tabela_simbolos):
@@ -726,6 +741,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'facaa')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'facaa')
             return self.l.procura_na_lista(palavra)
 
@@ -744,6 +760,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'facaat')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'facaat')
             return self.l.procura_na_lista(palavra)
 
@@ -777,6 +794,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'fi')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'fi')
             return self.l.procura_na_lista(palavra)
 
@@ -814,6 +832,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'fimf')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'fimf')
             return self.l.procura_na_lista(palavra)
 
@@ -832,6 +851,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'fimfa')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'fimfa')
             return self.l.procura_na_lista(palavra)
 
@@ -850,6 +870,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'fimfac')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'fimfac')
             return self.l.procura_na_lista(palavra)
 
@@ -883,6 +904,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'fims')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'fims')
             return self.l.procura_na_lista(palavra)
 
@@ -916,6 +938,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'i')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'i')
             return self.l.procura_na_lista(palavra)
 
@@ -936,6 +959,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'in')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'in')
             return self.l.procura_na_lista(palavra)
 
@@ -954,6 +978,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'ini')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'ini')
             return self.l.procura_na_lista(palavra)
 
@@ -972,6 +997,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'inic')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'inic')
             return self.l.procura_na_lista(palavra)
 
@@ -990,6 +1016,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'inici')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', "inici")
             return self.l.procura_na_lista(palavra)
 
@@ -1021,6 +1048,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'int')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'int')
             return self.l.procura_na_lista(palavra)
 
@@ -1039,6 +1067,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'inte')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'inte')
             return self.l.procura_na_lista(palavra)
 
@@ -1057,6 +1086,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'intei')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'intei')
             return self.l.procura_na_lista(palavra)
 
@@ -1075,6 +1105,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'inteir')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'inteir')
             return self.l.procura_na_lista(palavra)
 
@@ -1109,6 +1140,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'l')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'l')
             return self.l.procura_na_lista(palavra)
 
@@ -1127,6 +1159,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'le')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'le')
             return self.l.procura_na_lista(palavra)
 
@@ -1145,6 +1178,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'lei')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'lei')
             return self.l.procura_na_lista(palavra)
 
@@ -1177,6 +1211,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'li')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'li')
             return self.l.procura_na_lista(palavra)
 
@@ -1209,6 +1244,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'r')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'r')
             return self.l.procura_na_lista(palavra)
 
@@ -1227,6 +1263,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 're')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 're')
             return self.l.procura_na_lista(palavra)
 
@@ -1245,6 +1282,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'rea')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'rea')
             return self.l.procura_na_lista(palavra)
 
@@ -1277,6 +1315,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'v')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'v')
             return self.l.procura_na_lista(palavra)            
 
@@ -1295,6 +1334,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'va')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'va')
             return self.l.procura_na_lista(palavra)  
 
@@ -1315,6 +1355,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'var')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'var')
             return self.l.procura_na_lista(palavra)  
 
@@ -1333,6 +1374,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'vari')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'vari')
             return self.l.procura_na_lista(palavra)  
 
@@ -1351,6 +1393,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'varin')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'varin')
             return self.l.procura_na_lista(palavra)
 
@@ -1369,6 +1412,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'varini')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'varini')
             return self.l.procura_na_lista(palavra)
 
@@ -1387,6 +1431,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'varinic')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'varinic')
             return self.l.procura_na_lista(palavra)
 
@@ -1405,6 +1450,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'varinici')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'varinici')
             return self.l.procura_na_lista(palavra)
 
@@ -1436,6 +1482,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'varf')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'varf')
             return self.l.procura_na_lista(palavra)
 
@@ -1454,6 +1501,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 'varfi')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 'varfi')
             return self.l.procura_na_lista(palavra)
 
@@ -1486,6 +1534,7 @@ class analisador:
         else:
             if not self.l.procura_na_lista(palavra):
                 l.push('id', 's')
+            if not self.tabela_simbolos.procura_na_lista(palavra):
                 tabela_simbolos.push('id', 's')
             return self.l.procura_na_lista(palavra)
 
@@ -1562,13 +1611,8 @@ class analisador:
             elif caractere_no_comeco == True: 
                 retorno_scanner = ana.scanner(caractere_inicio, l, tabela_simbolos)
                 self.processa_lexemas(caractere_inicio, l, tabela_simbolos, retorno_scanner, ana)
-                if not any(elemento in palavra_inicio for elemento in lista_especiais):
-                    retorno_scanner = ana.scanner(palavra_inicio, l, tabela_simbolos) 
-                    self.processa_lexemas(palavra_inicio, l, tabela_simbolos, retorno_scanner, ana) 
-                else:
-                    flag_break = True
-                    ana.separa_lexemas(palavra_inicio, tabela_simbolos, l, ana, flag_literal)
-
+                retorno_scanner = ana.scanner(palavra_inicio, l, tabela_simbolos) 
+                self.processa_lexemas(palavra_inicio, l, tabela_simbolos, retorno_scanner, ana) 
             elif caractere_no_fim == True: 
                 retorno_scanner = ana.scanner(palavra_fim, l, tabela_simbolos) 
                 self.processa_lexemas(palavra_fim, l, tabela_simbolos, retorno_scanner, ana)
@@ -1630,42 +1674,8 @@ class analisador:
             if contador_especiais > 0:
 
                 #"\N TA AQUI"
-                
-                if (caractere == ";" or caractere == "=" or caractere == "," or caractere == "(" or caractere == ")"
-                or caractere == "+" or caractere == "-" or caractere == "*" or caractere == "/" or 
-                (caractere == '<' and palavra[index] != '-' and palavra[index] != '=' and palavra[index] != '>') or 
-                (caractere == '>' and palavra[index] != '=')):
 
-                    caracteres_especiais = True
-                    contador_especiais -= 1
-                    
-                    if palavra[0] == caractere:
-                        if flag_break == True:
-                            break
-                        caractere_inicio = palavra[0]
-                        palavra_inicio = palavra[1:]
-                        caractere_no_comeco = True
-                        palavra_anterior = ""
-                        ana.trata_lexemas(palavra, tabela_simbolos, l, ana)
-                    elif len(palavra) > index:
-                        if flag_break == True:
-                            break
-                        for caractere in palavra:
-                            if palavra[posicao] == caractere:
-                                palavra_anterior = palavra[0:posicao]
-                                caractere_meio = palavra[posicao]
-                                palavra_meio = palavra[posicao+1:] 
-                                ana.trata_lexemas(palavra, tabela_simbolos, l, ana)
-                    elif palavra[-1] == caractere: 
-                        caractere_fim = palavra[-1]
-                        palavra_fim = palavra[:-2]
-                        caractere_no_fim = True
-                        palavra_anterior = ""
-                        ana.trata_lexemas(palavra, tabela_simbolos, l, ana)
-
-                    contador_especiais -= 1
-
-                elif ((caractere == '<' and palavra[index] == '-')
+                if ((caractere == '<' and palavra[index] == '-')
                 or (caractere == '<' and palavra[index] == '=')
                 or (caractere == '<' and palavra[index] == '>')
                 or (caractere == '>' and palavra[index] == '=')):
@@ -1673,15 +1683,11 @@ class analisador:
                     caracteres_especiais = True 
 
                     if palavra[0] == caractere:
-                        if flag_break == True:
-                            break
                         caractere_inicio = palavra[0:2]
                         palavra_inicio = palavra[3:]
                         caractere_no_comeco = True
                         ana.trata_lexemas(palavra, tabela_simbolos, l, ana)
                     elif len(palavra) > index:
-                        if flag_break == True:
-                            break
                         for caractere in palavra:
                             if palavra[posicao] == caractere:
                                 palavra_anterior = palavra[:posicao]
@@ -1692,6 +1698,36 @@ class analisador:
                         caractere_fim = palavra[-2:]
                         palavra_fim = palavra[:-2]
                         caractere_no_fim = True 
+                        ana.trata_lexemas(palavra, tabela_simbolos, l, ana)
+
+                    contador_especiais -= 1
+                
+                elif (caractere == ";" or caractere == "=" or caractere == "," or caractere == "(" or caractere == ")"
+                or caractere == "+" or caractere == "-" or caractere == "*" or caractere == "/" or 
+                (caractere == '<' and palavra[index] != '-' and palavra[index] != '=' and palavra[index] != '>') or 
+                (caractere == '>' and palavra[index] != '=')):
+
+                    caracteres_especiais = True
+                    contador_especiais -= 1
+                    
+                    if palavra[0] == caractere:
+                        caractere_inicio = palavra[0]
+                        palavra_inicio = palavra[1:]
+                        caractere_no_comeco = True
+                        palavra_anterior = ""
+                        ana.trata_lexemas(palavra, tabela_simbolos, l, ana)
+                    elif len(palavra) > index:
+                        for caractere in palavra:
+                            if palavra[posicao] == caractere:
+                                palavra_anterior = palavra[0:posicao]
+                                caractere_meio = palavra[posicao]
+                                palavra_meio = palavra[posicao+1:] 
+                                ana.trata_lexemas(palavra, tabela_simbolos, l, ana)
+                    elif palavra[-1] == caractere: 
+                        caractere_fim = palavra[-1]
+                        palavra_fim = palavra[:-1]
+                        caractere_no_fim = True
+                        palavra_anterior = ""
                         ana.trata_lexemas(palavra, tabela_simbolos, l, ana)
 
                     contador_especiais -= 1
