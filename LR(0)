@@ -1,1 +1,79 @@
-<mxfile host="app.diagrams.net" modified="2021-04-11T01:10:48.107Z" agent="5.0 (Windows)" version="14.5.10" etag="mfQ17xTUiDP6p7C49Y0u" type="github"><diagram id="eI5aiOl0ri4NeMSu0San">UzV2zq1wL0osyPDNT0nNUTV2VTV2LsrPL4GwciucU3NyVI0MMlNUjV1UjYwMgFjVyA2HrCFY1qAgsSg1rwSLBiADYTaQg2Y1AA==</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2021-04-11T02:57:26.439Z" agent="5.0 (Windows)" etag="sClv0mnCgElb0IToU9cq" version="14.5.10" type="github">
+  <diagram id="eI5aiOl0ri4NeMSu0San" name="Page-1">
+    <mxGraphModel dx="782" dy="432" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="fa8QofdirIhMGLeMyCPN-3" value="" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="80" y="150" width="170" height="560" as="geometry" />
+        </mxCell>
+        <mxCell id="fa8QofdirIhMGLeMyCPN-4" value="&lt;div align=&quot;left&quot;&gt;P&#39; -&amp;gt; .P&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;P -&amp;gt; .inicio V A&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;V -&amp;gt; .varinicio LV&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;LV -&amp;gt; .D LV&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;LV -&amp;gt; .varfim;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;D -&amp;gt; .L TIPO;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;L -&amp;gt; .id, L&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;L -&amp;gt; .id&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;TIPO -&amp;gt; .int&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;TIPO -&amp;gt; .real&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;TIPO -&amp;gt; .lit&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;A -&amp;gt; .ES A&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;ES -&amp;gt; .leia id;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;ES -&amp;gt; .escreva ARG;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;ARG -&amp;gt; .lit&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;ARG -&amp;gt; .num&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;ARG -&amp;gt; .id&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;A -&amp;gt; .CMD A&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;CMD -&amp;gt; .id rcb LD;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;LD -&amp;gt; .OPRD opm OPRD&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;LD -&amp;gt; .OPRD&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;OPRD -&amp;gt; .id&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;OPRD -&amp;gt; .num&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;A -&amp;gt; .COND A&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;COND -&amp;gt; .CAB CP&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;CAB -&amp;gt; .se (EXP_R) entao&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;EXP_R -&amp;gt; .OPRD opr OPRD&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;CP -&amp;gt; .ES CP&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;CP -&amp;gt; .CMD CP&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;CP -&amp;gt; .COND CP&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;CP -&amp;gt; .fimse&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;A -&amp;gt; .R A&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;R -&amp;gt; .facaate (EXP_R) CP_R&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;CP_R -&amp;gt; .ES CP_R&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;CP_R -&amp;gt; .CMD CP_R&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;CP_R -&amp;gt; .COND CP_R&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;CP_R -&amp;gt; .fimfaca&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;A -&amp;gt; .fim&lt;br&gt;&lt;/div&gt;" style="text;html=1;resizable=0;autosize=1;align=left;verticalAlign=middle;points=[];fillColor=none;strokeColor=none;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="90" y="160" width="170" height="540" as="geometry" />
+        </mxCell>
+        <mxCell id="fa8QofdirIhMGLeMyCPN-7" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="220" y="150" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="fa8QofdirIhMGLeMyCPN-8" value="0" style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;strokeColor=none;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="225" y="155" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="fa8QofdirIhMGLeMyCPN-34" value="&lt;div align=&quot;left&quot;&gt;A -&amp;gt; CMD. A&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;&lt;div align=&quot;left&quot;&gt;CP -&amp;gt; CMD. CP&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div align=&quot;left&quot;&gt;CP_R -&amp;gt; CMD. CP_R&lt;/div&gt;&lt;/div&gt;" style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;rounded=0;labelBackgroundColor=none;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="540" y="650" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="fa8QofdirIhMGLeMyCPN-35" value="&lt;div align=&quot;left&quot;&gt;TIPO -&amp;gt; lit.&lt;br&gt;&lt;div align=&quot;left&quot;&gt;ARG -&amp;gt; lit.&lt;/div&gt;&lt;/div&gt;" style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;rounded=0;labelBackgroundColor=none;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="570" y="410" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="fa8QofdirIhMGLeMyCPN-36" value="&lt;div align=&quot;left&quot;&gt;LV -&amp;gt; varfim.;&lt;/div&gt;" style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;rounded=0;labelBackgroundColor=none;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="560" y="150" width="90" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="fa8QofdirIhMGLeMyCPN-37" value="Text" style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;strokeColor=none;rounded=0;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="300" y="550" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="fa8QofdirIhMGLeMyCPN-38" value="Text" style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;strokeColor=none;rounded=0;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="310" y="560" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="fa8QofdirIhMGLeMyCPN-39" value="Text" style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;strokeColor=none;rounded=0;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="330" y="430" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="fa8QofdirIhMGLeMyCPN-40" value="&lt;div align=&quot;left&quot;&gt;LD -&amp;gt; OPRD. opm OPRD&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;&lt;div align=&quot;left&quot;&gt;LD -&amp;gt; OPRD.&lt;/div&gt;&lt;/div&gt;" style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;strokeColor=none;rounded=0;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="530" y="720" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="fa8QofdirIhMGLeMyCPN-41" value="&lt;div align=&quot;left&quot;&gt;V -&amp;gt; varinicio. LV&lt;/div&gt;" style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;rounded=0;labelBackgroundColor=none;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="450" y="90" width="110" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="fa8QofdirIhMGLeMyCPN-42" value="&lt;div align=&quot;left&quot;&gt;ARG -&amp;gt; num.&lt;/div&gt;" style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;rounded=0;labelBackgroundColor=none;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="560" y="610" width="90" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="fa8QofdirIhMGLeMyCPN-43" value="&lt;div align=&quot;left&quot;&gt;ES -&amp;gt; escreva. ARG;&lt;/div&gt;" style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;rounded=0;labelBackgroundColor=none;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="540" y="570" width="130" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="fa8QofdirIhMGLeMyCPN-44" value="&lt;div align=&quot;left&quot;&gt;ES -&amp;gt; leia. id;&lt;/div&gt;" style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;rounded=0;labelBackgroundColor=none;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="560" y="530" width="90" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="fa8QofdirIhMGLeMyCPN-45" value="&lt;div align=&quot;left&quot;&gt;A -&amp;gt; ES. A&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;&lt;div align=&quot;left&quot;&gt;CP -&amp;gt; ES. CP&lt;/div&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;CP_R -&amp;gt; ES. CP_R&lt;/div&gt;" style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;rounded=0;labelBackgroundColor=none;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="545" y="460" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="fa8QofdirIhMGLeMyCPN-46" value="&lt;div align=&quot;left&quot;&gt;TIPO -&amp;gt; real.&lt;/div&gt;" style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;rounded=0;labelBackgroundColor=none;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="565" y="370" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="fa8QofdirIhMGLeMyCPN-47" value="&lt;div align=&quot;left&quot;&gt;TIPO -&amp;gt; int.&lt;/div&gt;" style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;rounded=0;labelBackgroundColor=none;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="565" y="330" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="fa8QofdirIhMGLeMyCPN-48" value="&lt;div align=&quot;left&quot;&gt;L -&amp;gt; id., L&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;&lt;div align=&quot;left&quot;&gt;L -&amp;gt; id.&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;&lt;div align=&quot;left&quot;&gt;ARG -&amp;gt; id.&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;OPRD -&amp;gt; id.&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;&lt;div align=&quot;left&quot;&gt;CMD -&amp;gt; id. rcb LD;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;rounded=0;labelBackgroundColor=none;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="545" y="230" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="fa8QofdirIhMGLeMyCPN-49" value="&lt;div align=&quot;left&quot;&gt;D -&amp;gt; L. TIPO;&lt;/div&gt;" style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;rounded=0;labelBackgroundColor=none;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="560" y="190" width="90" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="fa8QofdirIhMGLeMyCPN-50" value="&lt;div align=&quot;left&quot;&gt;LV -&amp;gt; D. LV&lt;/div&gt;" style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;rounded=0;labelBackgroundColor=none;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="565" y="110" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="fa8QofdirIhMGLeMyCPN-51" value="&lt;div align=&quot;left&quot;&gt;P -&amp;gt; inicio. V A&lt;/div&gt;" style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;rounded=0;labelBackgroundColor=none;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="560" y="70" width="90" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="fa8QofdirIhMGLeMyCPN-52" value="P&#39; -&amp;gt; P." style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;rounded=0;labelBackgroundColor=none;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="580" y="30" width="50" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
