@@ -1,4 +1,27 @@
 import os.path
+import re
+
+i = 0
+contador_coluna = 0
+aspas_palavra = 0
+aspas_lidas = 0
+flag_literal = 0
+palavra = ""
+palavra_anterior = ""
+palavra_inicio = ""
+caractere_inicio = ""
+palavra_meio = ""
+caractere_meio = ""
+palavra_fim = ""
+caractere_fim = ""
+pre_aspas = ""
+pos_aspas = ""
+entre_aspas = ""
+caracteres_especiais = False
+caractere_no_comeco = False
+caractere_no_fim = False
+literal_comecou = False
+flag = False
 
 i = 0
 contador_coluna = 0
@@ -44,6 +67,7 @@ class analisador:
     def __init__(self, l, tabela_simbolos):
         self.l = l
         self.tabela_simbolos = tabela_simbolos
+
 
     def scanner(self, arquivo_fonte, l, tabela_simbolos): 
         global j 
@@ -510,5 +534,6 @@ def main():
                         print("Classe: " + retorno_scanner.classe + ", lexema: " + retorno_scanner.lexema + ", tipo: " + retorno_scanner.tipo + ".")      
             contador_linha += 1  
         fonte.close()
+
 if __name__ == '__main__':
     main()
