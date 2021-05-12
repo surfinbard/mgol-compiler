@@ -145,7 +145,7 @@ class analisador:
         if arquivo_fonte[contador_coluna].isspace() or self.Delimitadores(arquivo_fonte) or self.Operadores(arquivo_fonte) or arquivo_fonte[contador_coluna]=='\n': 
             palavra = arquivo_fonte[j:contador_coluna]
             if not self.l.procura_na_lista(palavra):
-                l.push('NUM', palavra)
+                l.push('Num', palavra)
             return self.l.procura_na_lista(palavra)        
         if arquivo_fonte[contador_coluna].isdigit():
             return self.q1(arquivo_fonte, l, tabela_simbolos)
@@ -173,7 +173,7 @@ class analisador:
         if arquivo_fonte[contador_coluna].isspace() or self.Delimitadores(arquivo_fonte) or self.Operadores(arquivo_fonte) or arquivo_fonte[contador_coluna]=='\n': 
             palavra = arquivo_fonte[j:contador_coluna]
             if not self.l.procura_na_lista(palavra):
-                l.push('NUM', palavra)
+                l.push('Num', palavra)
             return self.l.procura_na_lista(palavra)
         if arquivo_fonte[contador_coluna].isdigit():
             return self.q3(arquivo_fonte, l, tabela_simbolos)
@@ -213,7 +213,7 @@ class analisador:
         if arquivo_fonte[contador_coluna].isspace() or self.Delimitadores(arquivo_fonte) or self.Operadores(arquivo_fonte) or arquivo_fonte[contador_coluna]=='\n': 
             palavra = arquivo_fonte[j:contador_coluna]
             if not self.l.procura_na_lista(palavra):
-                l.push('NUM', palavra)
+                l.push('Num', palavra)
             return self.l.procura_na_lista(palavra)
         if arquivo_fonte[contador_coluna].isdigit():
             return self.q6(arquivo_fonte, l, tabela_simbolos)
@@ -230,7 +230,7 @@ class analisador:
             return self.q7(arquivo_fonte, l, tabela_simbolos)
         return self.q24(2, arquivo_fonte, l)
     
-    def q8(self, arquivo_fonte, l, tabela_simbolos): # token *lit*
+    def q8(self, arquivo_fonte, l, tabela_simbolos): # token *literal*
         global j
         global contador_coluna
         global palavra
@@ -238,7 +238,7 @@ class analisador:
         if arquivo_fonte[contador_coluna].isspace() or self.Delimitadores(arquivo_fonte) or self.Operadores(arquivo_fonte):
             palavra = arquivo_fonte[j:contador_coluna] 
             if not self.l.procura_na_lista(palavra):
-                l.push('lit', palavra)
+                l.push('Literal', palavra)
             return self.l.procura_na_lista(palavra)
         else:
             return self.q24(2, arquivo_fonte, l)
@@ -447,7 +447,7 @@ class analisador:
         if arquivo_fonte[contador_coluna].isspace() or arquivo_fonte[contador_coluna].isalpha():
             palavra = arquivo_fonte[j:contador_coluna]
             if not self.l.procura_na_lista(palavra):
-                l.push('VIR', ',')
+                l.push('Vir', ',')
             return self.l.procura_na_lista(palavra)
         else: 
             return self.q24(1, arquivo_fonte, l)
@@ -481,7 +481,40 @@ class analisador:
             print("Erro " + str(cod) + ". Há pelo menos um caractere inválido no id. Linha " + str(contador_linha) + ", coluna " + str(j+1) +" à coluna "+str(contador_coluna-1) +".")
         else:
             print("Erro " + str(cod) + ". caractere inválido, linha " + str(contador_linha) + ", coluna " + str(contador_coluna) + ".")
-     
+        
+    def parser(self, ana, l, tabela_simbolos, fonte):
+        
+        pilha = [0]
+        fonte 
+        primeira_palavra = fonte.split()[0] 
+        i=1
+        a = primeira_palavra
+        while true:
+            s = pilha.pop()
+            if action(s,a)[0] == 's':
+                pilha.append((action(s,a)[1]))
+                a = fonte.split()[i] 
+                i+=1
+            elif action(s,a)[0] == 'r':
+                for j in beta.length():
+                    pilha.pop()
+                t = pilha.pop()
+                pilha.append((action(t,a))
+                print("producao") # consertar
+            elif action(s,a) == 'acc':
+                break
+            else:
+                trata_erro(fonte)
+            
+    def trata_erro(self, num, conjunto, ana, l, tabela_simbolos):
+        ana.imprime_erro(num)
+        if num in conjunto:
+            
+
+    def imprime_erro(self, num):
+        print('Erro: token inesperado em linha ' + contador_linha + ', coluna ' + contador_coluna + '.')
+
+        
 def main():
     if not os.path.exists('f.txt'):
         print("Arquivo não encontrado.\n")
@@ -527,13 +560,16 @@ def main():
 
                 if retorno_scanner != None:
                     if str(retorno_scanner.classe)[0:4] == "ERRO":
-                        print("Classe: " + retorno_scanner.classe + ", lexema: " + retorno_scanner.lexema + ", tipo: " + retorno_scanner.tipo + ".")
                         cod = int(retorno_scanner.classe[4:5])
-                        ana.erro(cod)     
-                    else:
-                        print("Classe: " + retorno_scanner.classe + ", lexema: " + retorno_scanner.lexema + ", tipo: " + retorno_scanner.tipo + ".")      
+                        ana.erro(cod)
+    
             contador_linha += 1  
         fonte.close()
+
+        arquivo = open('f.txt', 'r')
+        fonte = arquivo.read()
+        
+        ana.parser(ana, l, tabela_simbolos, fonte)
 
 if __name__ == '__main__':
     main()
